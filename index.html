@@ -999,6 +999,443 @@
     align-self: stretch;
     margin: 0 4px;
   }
+
+  /* ─── INTERNAL LOCK BANNER ─── */
+  #internal-gate {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 10, 20, 0.97);
+    z-index: 8000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    backdrop-filter: blur(4px);
+  }
+  #internal-gate.active { display: flex; }
+  .int-pw-box {
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+  }
+  .int-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(155,35,53,0.15);
+    border: 1px solid rgba(155,35,53,0.4);
+    border-radius: 2px;
+    padding: 6px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #E05A6A;
+    margin-bottom: 24px;
+  }
+  .int-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--off-white);
+    margin-bottom: 8px;
+  }
+  .int-subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .int-divider {
+    width: 40px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--crimson), transparent);
+    margin: 0 auto 28px;
+  }
+  .int-field-wrap { position: relative; margin-bottom: 12px; }
+  .int-field-wrap::before {
+    content: '🔐';
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px; opacity: 0.5;
+  }
+  #int-input {
+    width: 100%;
+    background: rgba(155,35,53,0.06);
+    border: 1px solid rgba(155,35,53,0.35);
+    border-radius: 3px;
+    color: var(--off-white);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 3px;
+    padding: 13px 16px 13px 44px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  #int-input:focus { border-color: var(--crimson); }
+  #int-input.shake { animation: shake 0.4s ease; border-color: var(--crimson); }
+  #int-btn {
+    width: 100%;
+    background: rgba(155,35,53,0.15);
+    border: 1px solid var(--crimson);
+    border-radius: 3px;
+    color: #E05A6A;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 13px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  #int-btn:hover { background: rgba(155,35,53,0.28); }
+  #int-error {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--crimson);
+    height: 16px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  #int-error.visible { opacity: 1; }
+  #int-cancel {
+    margin-top: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    outline: none;
+  }
+
+  /* ─── INTERNAL SECTIONS ─── */
+  .internal-section { display: none; padding: 60px; }
+  .internal-section.active { display: block; }
+
+  .int-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(155,35,53,0.12);
+    border: 1px solid rgba(155,35,53,0.3);
+    border-radius: 2px;
+    padding: 5px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #E05A6A;
+    margin-bottom: 14px;
+  }
+
+  /* ─── ORG CHART ─── */
+  .org-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 40px 0;
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+  .org-level {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 20px 0;
+  }
+  .org-level::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 20px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.3));
+  }
+  .org-level:first-child::before { display: none; }
+  .org-connector {
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: rgba(201,168,76,0.25);
+  }
+  .org-node {
+    background: var(--navy-light);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-top: 2px solid var(--gold);
+    border-radius: 3px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 160px;
+    max-width: 200px;
+    position: relative;
+  }
+  .org-node.current { border-top-color: var(--gold); }
+  .org-node.needed { border-top-color: #4CAF88; border-style: dashed; border-top-style: solid; opacity: 0.85; }
+  .org-node.critical { border-top-color: var(--crimson); }
+  .org-node.center-node {
+    border-top: 3px solid var(--gold);
+    background: linear-gradient(160deg, #1E2E50, #152040);
+    min-width: 200px;
+  }
+  .org-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .org-name {
+    font-size: 13px;
+    color: var(--off-white);
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .org-location {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  .org-status-dot {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .s-filled { background: #4CAF88; }
+  .s-needed { background: var(--crimson); }
+  .s-partial { background: #D4A840; }
+
+  .org-legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  .legend-swatch {
+    width: 24px; height: 3px;
+    border-radius: 2px;
+  }
+
+  /* ─── BUDGET TABLE ─── */
+  .budget-tier {
+    margin-bottom: 48px;
+  }
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px 24px;
+    border-radius: 3px;
+  }
+  .tier-gold { background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04)); border: 1px solid rgba(201,168,76,0.3); }
+  .tier-silver { background: linear-gradient(135deg, rgba(160,160,180,0.1), rgba(160,160,180,0.03)); border: 1px solid rgba(160,160,180,0.2); }
+  .tier-bronze { background: linear-gradient(135deg, rgba(180,120,60,0.1), rgba(180,120,60,0.03)); border: 1px solid rgba(180,120,60,0.2); }
+  .tier-icon { font-size: 24px; }
+  .tier-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--off-white);
+  }
+  .tier-total {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .tier-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .budget-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .budget-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--warm-gray);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .budget-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .budget-table .item-name { color: var(--off-white); }
+  .budget-table .item-amt { font-family: 'IBM Plex Mono', monospace; color: var(--gold); text-align: right; white-space: nowrap; }
+  .budget-table .item-note { font-size: 11px; color: var(--text-dim); }
+  .budget-table tfoot td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    border-bottom: none;
+    padding-top: 16px;
+  }
+
+  /* ─── FUNDING ASK ─── */
+  .donation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  .donation-card {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .donation-card-header {
+    padding: 20px 24px 16px;
+  }
+  .donation-card-body { padding: 0 24px 24px; }
+  .donation-type {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .donation-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .donation-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+  .donation-steps {
+    list-style: none;
+    margin-top: 16px;
+  }
+  .donation-steps li {
+    font-size: 12px;
+    color: var(--warm-gray);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .donation-steps li:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .d-bg-501 { background: linear-gradient(160deg, #0D1F12, #0A1A0E); }
+  .d-bg-intl { background: linear-gradient(160deg, #0D1525, #0A1020); }
+  .d-bg-crypto { background: linear-gradient(160deg, #150D25, #100820); }
+  .d-bg-advocacy { background: linear-gradient(160deg, #1F1408, #180F06); }
+
+  .friction-box {
+    background: var(--navy-light);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    border-radius: 0 3px 3px 0;
+  }
+  .friction-box h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .friction-box p {
+    font-size: 13px;
+    color: var(--warm-gray);
+    line-height: 1.7;
+  }
+
+  .donor-tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  @media(max-width:760px){ .donor-tier-grid{ grid-template-columns:1fr; } }
+  .donor-tier {
+    background: var(--navy-light);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-top: 3px solid var(--gold);
+    padding: 22px 20px;
+    border-radius: 2px;
+  }
+  .donor-tier.silver-tier { border-top-color: #A8A8B8; }
+  .donor-tier.bronze-tier { border-top-color: #B47840; }
+  .donor-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .donor-tier.silver-tier .donor-amount { color: #C8C8D8; }
+  .donor-tier.bronze-tier .donor-amount { color: #D49060; }
+  .donor-tier-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .donor-tier ul { list-style: none; }
+  .donor-tier li {
+    font-size: 12px;
+    color: var(--warm-gray);
+    padding: 4px 0;
+    line-height: 1.5;
+  }
+  .donor-tier li::before { content: '✦ '; color: var(--gold); font-size: 8px; }
 </style>
 </head>
 <body>
@@ -1016,6 +1453,22 @@
     <button id="pw-btn" onclick="checkPW()">Unlock Document</button>
     <div id="pw-error">Incorrect access code. Please try again.</div>
     <div class="pw-hint">Contact the communications team for access</div>
+  </div>
+</div>
+
+<!-- INTERNAL SECTION PASSWORD GATE -->
+<div id="internal-gate">
+  <div class="int-pw-box">
+    <div class="int-banner">⚠ Restricted · Internal Use Only</div>
+    <div class="int-title">Internal Access Required</div>
+    <div class="int-subtitle">This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only.</div>
+    <div class="int-divider"></div>
+    <div class="int-field-wrap">
+      <input type="password" id="int-input" placeholder="Enter internal code" autocomplete="off" onkeydown="if(event.key==='Enter') checkIntPW()">
+    </div>
+    <button id="int-btn" onclick="checkIntPW()">Access Internal Documents</button>
+    <div id="int-error">Incorrect code. Access denied.</div>
+    <button id="int-cancel" onclick="cancelIntGate()">← Return to Media Plan</button>
   </div>
 </div>
 
@@ -1037,7 +1490,7 @@
 
 <!-- NAV -->
 <div class="nav-tabs">
-  <button class="nav-tab active" onclick="showSection('situation')">Situation</button>
+  <button class="nav-tab" onclick="showSection('situation')">Situation</button>
   <button class="nav-tab" onclick="showSection('objectives')">Objectives</button>
   <button class="nav-tab" onclick="showSection('media')">Media Plan</button>
   <button class="nav-tab" onclick="showSection('social')">Social Media</button>
@@ -1046,6 +1499,10 @@
   <button class="nav-tab" onclick="showSection('checklist')">Action Checklist</button>
   <button class="nav-tab" onclick="showSection('dashboard')">📊 Dashboard</button>
   <button class="nav-tab" onclick="showSection('risks')">Risks & Mitigation</button>
+  <button class="nav-tab" style="border-left: 1px solid rgba(155,35,53,0.4); color: #E05A6A;" onclick="requestInternal('org-current')">🔐 Current Org</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('org-needed')">🔐 Urgent Buildout</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('budget')">🔐 Budget</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('funding')">🔐 Funding Ask</button>
 </div>
 
 <!-- ═══════════════════ SITUATION ═══════════════════ -->
@@ -2356,6 +2813,555 @@
   <br><br>
 </div>
 
+<!-- ═══════════════════ CURRENT ORG ═══════════════════ -->
+<div class="internal-section" id="org-current">
+  <div class="int-section-badge">🔐 Internal · Restricted</div>
+  <div class="section-eyebrow">Internal Section 01</div>
+  <div class="section-title">Comando Con Venezuela — Current Organization</div>
+  <p class="section-intro">This is the current operational structure of MCM's private office as of February 2026. It is a skeleton crew that has accomplished extraordinary things on minimal resources — but it is not equipped to execute the 90-day media strategy at the scale required. Every gap identified here represents an urgent hire.</p>
+
+  <div class="org-legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--gold);"></div> Role Currently Filled</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#4CAF88; border-top: 2px dashed #4CAF88; background:none; border-bottom:none; border-left:none; border-right:none; width:24px; height:2px; border-top-style:dashed;"></div><div class="legend-swatch" style="background:#4CAF88; width:14px; height:2px;"></div> Role Urgently Needed</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--crimson);"></div> Critical Gap</div>
+  </div>
+
+  <div class="org-tree">
+    <!-- Tier 1: MCM -->
+    <div class="org-level" style="padding-top:0;">
+      <div class="org-node center-node">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">Principal</div>
+        <div class="org-name">María Corina Machado</div>
+        <div class="org-location">Washington D.C. / Mobile</div>
+      </div>
+    </div>
+
+    <!-- Tier 2: Direct Reports -->
+    <div class="org-level" style="position:relative;">
+      <div class="org-connector"></div>
+      <div class="org-node current">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">Chief of Staff</div>
+        <div class="org-name">[Role Filled]</div>
+        <div class="org-location">Washington D.C.</div>
+      </div>
+      <div class="org-node current">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">Senior Political Advisor</div>
+        <div class="org-name">[Role Filled]</div>
+        <div class="org-location">Washington D.C.</div>
+      </div>
+      <div class="org-node current">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">International Liaison</div>
+        <div class="org-name">[Role Filled]</div>
+        <div class="org-location">Madrid, Spain</div>
+      </div>
+      <div class="org-node current">
+        <div class="org-status-dot s-partial"></div>
+        <div class="org-role">Venezuela Coordinator</div>
+        <div class="org-name">[Role Partially Filled]</div>
+        <div class="org-location">Caracas / Underground</div>
+      </div>
+    </div>
+
+    <!-- Tier 3: Operational -->
+    <div class="org-level" style="position:relative;">
+      <div class="org-connector"></div>
+      <div class="org-node current">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">Communications Lead</div>
+        <div class="org-name">[Role Filled]</div>
+        <div class="org-location">Washington D.C.</div>
+      </div>
+      <div class="org-node current">
+        <div class="org-status-dot s-filled"></div>
+        <div class="org-role">Florida Regional Director</div>
+        <div class="org-name">[Role Filled]</div>
+        <div class="org-location">Miami, Florida</div>
+      </div>
+      <div class="org-node critical">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">Social Media Director</div>
+        <div class="org-name">⚠ VACANT</div>
+        <div class="org-location">Urgently Needed</div>
+      </div>
+      <div class="org-node critical">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">U.S. Press Secretary</div>
+        <div class="org-name">⚠ VACANT</div>
+        <div class="org-location">Washington D.C.</div>
+      </div>
+      <div class="org-node critical">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">Fundraising Director</div>
+        <div class="org-name">⚠ VACANT</div>
+        <div class="org-location">New York / D.C.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-eyebrow" style="margin-bottom:16px;">Current Team Assessment</div>
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3>What the Current Team Does Well</h3>
+      <ul>
+        <li>Maintains MCM's security, logistics, and daily schedule</li>
+        <li>Manages existing international diplomatic relationships</li>
+        <li>Coordinates with Edmundo González's team</li>
+        <li>Handles Spanish-language media and diaspora communications</li>
+        <li>Maintains the underground network inside Venezuela</li>
+        <li>Has successfully operated under extreme adversarial conditions</li>
+      </ul>
+    </div>
+    <div class="sit-card red">
+      <h3>Critical Gaps for the 90-Day Plan</h3>
+      <ul>
+        <li>No dedicated U.S. English-language press operation</li>
+        <li>No professional social media / content production capability</li>
+        <li>No fundraising infrastructure or donor relations team</li>
+        <li>No D.C. lobbying or Congressional relations specialist</li>
+        <li>No media booking agent for U.S. TV / podcast circuit</li>
+        <li>No full-time videographer or production team</li>
+        <li>No legal counsel for U.S. advocacy compliance (FARA, 501c3)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ URGENT BUILDOUT ═══════════════════ -->
+<div class="internal-section" id="org-needed">
+  <div class="int-section-badge">🔐 Internal · Restricted</div>
+  <div class="section-eyebrow">Internal Section 02</div>
+  <div class="section-title">Urgent Organization Buildout</div>
+  <p class="section-intro">To execute the 90-day media strategy, Comando Con Venezuela must grow from a survival operation into a professional political office. These are the hires and external partners needed immediately — week by week. Think of this as going from a local campaign to a presidential operation.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <h3>Week 1 Critical Hires</h3>
+      <p>These roles must be filled before any major media appearances. Without them, MCM walks into Rogan, Shapiro, and Fox News without a net.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <h3>Month 1 Infrastructure</h3>
+      <p>The external partners and agencies that amplify a small core team into a full-scale operation. A good PR firm does the work of 10 staffers.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <h3>Month 2–3 Scale-Up</h3>
+      <p>As funding arrives and momentum builds, these roles convert the operation from a media campaign into a government-in-waiting infrastructure.</p>
+    </div>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div class="dash-section-title">Week 1 — Non-Negotiable Hires <span>Hire Before Any Major Appearance</span></div>
+  <div class="org-tree">
+    <div class="org-level" style="padding-top:0; flex-wrap:wrap; gap:16px; justify-content:flex-start;">
+      <div class="org-node needed" style="max-width:240px; min-width:220px; text-align:left; padding:20px;">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">U.S. Communications Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:8px 0;">Bilingual EN/ES. Manages all U.S. media relations. Former political campaign or White House comms background preferred.</div>
+        <div class="org-location">📍 Washington D.C. · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:240px; min-width:220px; text-align:left; padding:20px;">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">Social Media Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:8px 0;">TikTok-native, bilingual. Manages all platforms, content calendar, creator partnerships. Must understand political messaging.</div>
+        <div class="org-location">📍 Remote / D.C. · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:240px; min-width:220px; text-align:left; padding:20px;">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">Videographer / Content Producer</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:8px 0;">On-call, travels with MCM. Captures all appearances, produces same-day vertical cuts for TikTok/Reels, manages YouTube uploads.</div>
+        <div class="org-location">📍 D.C. / Travel · Contract</div>
+      </div>
+      <div class="org-node needed" style="max-width:240px; min-width:220px; text-align:left; padding:20px;">
+        <div class="org-status-dot s-needed"></div>
+        <div class="org-role">Media Booking Agent</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:8px 0;">Dedicated agent within a top D.C./NY PR firm. Sole job: getting MCM booked on Sunday shows, cable, and top podcasts.</div>
+        <div class="org-location">📍 New York / D.C. · Agency</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTH 1 EXTERNAL PARTNERS -->
+  <div class="dash-section-title">Month 1 — External Partners & Agencies <span>Amplify the Core Team</span></div>
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3>U.S. PR & Communications Firm</h3>
+      <ul>
+        <li>Top-tier D.C. firm with demonstrated foreign leader experience</li>
+        <li>Must have existing relationships at Fox News, NBC, CBS, ABC</li>
+        <li>Firms to approach: SKDK, Bully Pulpit Interactive, Mercury, Teneo</li>
+        <li>Deliverable: 6 confirmed Priority 1 media bookings within 30 days</li>
+        <li>Budget: $25–40K/month retainer</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>D.C. Government Relations / Lobbying</h3>
+      <ul>
+        <li>Registered lobbyist or advocacy firm for Congressional outreach</li>
+        <li>Must have Latin America and foreign policy committee relationships</li>
+        <li>Note: FARA registration may be required — legal counsel must advise</li>
+        <li>Firms to consider: Akin Gump, BGR Group, Brownstein Hyatt</li>
+        <li>Budget: $20–35K/month</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>U.S. Legal Counsel</h3>
+      <ul>
+        <li>Foreign agent registration (FARA) compliance counsel</li>
+        <li>501(c)(3) partner nonprofit establishment or identification</li>
+        <li>Donor compliance and international wire transfer legal review</li>
+        <li>Intellectual property protection for MCM brand/name/image</li>
+        <li>Budget: $15–25K initial setup + monthly retainer</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>Media Monitoring & Analytics</h3>
+      <ul>
+        <li>Meltwater or Cision for real-time media tracking and sentiment</li>
+        <li>Brandwatch or Sprout Social for social media analytics</li>
+        <li>Google Trends monitoring dashboard (weekly reporting)</li>
+        <li>Weekly media report delivered every Monday to core team</li>
+        <li>Budget: $3–6K/month</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MONTH 2-3 SCALE -->
+  <div class="dash-section-title">Months 2–3 — Scale-Up Roles <span>As Funding Arrives</span></div>
+  <div class="org-tree">
+    <div class="org-level" style="padding-top:0; flex-wrap:wrap; gap:16px; justify-content:flex-start;">
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Fundraising Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Manages U.S. donor relationships, 501(c)(3) vehicle, events. Based NY or D.C.</div>
+        <div class="org-location">📍 New York · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Congressional Relations Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Former Hill staffer. Manages Senate/House relationships, committee appearances, resolution sponsorships.</div>
+        <div class="org-location">📍 Washington D.C. · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Diaspora Outreach Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Organizes Venezuelan-American community in Florida, Texas, New York. Manages rallies and grassroots network.</div>
+        <div class="org-location">📍 Miami, Florida · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Policy & Research Director</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Drafts op-eds, Foreign Affairs essay, transition blueprint, briefing docs for Congressional meetings.</div>
+        <div class="org-location">📍 D.C. / Remote · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Operations & Finance Manager</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Manages budgets, donor records, compliance, travel logistics, and office administration.</div>
+        <div class="org-location">📍 Washington D.C. · Full-time</div>
+      </div>
+      <div class="org-node needed" style="max-width:220px; min-width:200px; text-align:left; padding:18px;">
+        <div class="org-role">Spanish-Language Media Lead</div>
+        <div class="org-name" style="font-size:12px; color:var(--warm-gray); margin:6px 0;">Dedicated liaison to Univision, Telemundo, and Latin American press. Bilingual. Based Miami.</div>
+        <div class="org-location">📍 Miami, Florida · Full-time</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-metric-row">
+    <div class="sm-badge"><span class="sm-lbl">Current Team Size</span><span class="sm-val">~8 people</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Week 1 Target</span><span class="sm-val">+4 critical hires</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Month 1 Target</span><span class="sm-val">+4 agencies/firms</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Month 2–3 Target</span><span class="sm-val">+6 senior roles</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Full Operation Size</span><span class="sm-val">~20 staff + 4 agencies</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ BUDGET ═══════════════════ -->
+<div class="internal-section" id="budget">
+  <div class="int-section-badge">🔐 Internal · Restricted</div>
+  <div class="section-eyebrow">Internal Section 03</div>
+  <div class="section-title">90-Day Budget — Three Scenarios</div>
+  <p class="section-intro">The honest truth: this campaign can be run at multiple levels of resourcing. What changes is speed, scale, and likelihood of success. Each tier below represents a different level of ambition — and a different fundraising target. All figures are 90-day estimates in USD.</p>
+
+  <!-- TIER 1: SHOESTRING -->
+  <div class="budget-tier">
+    <div class="tier-header tier-bronze">
+      <div class="tier-icon">🥉</div>
+      <div>
+        <div class="tier-name">Shoestring — Minimum Viable Operation</div>
+        <div class="tier-desc">Lean team, outsourced production, targeted placements only. Enough to execute the top 30% of the media plan.</div>
+      </div>
+      <div class="tier-total">~$500K</div>
+    </div>
+    <table class="budget-table">
+      <thead><tr><th>Category</th><th>Item</th><th>Monthly</th><th>90-Day Total</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="item-name">Personnel</td><td>U.S. Communications Director</td><td class="item-amt">$12,000</td><td class="item-amt">$36,000</td><td class="item-note">Senior hire, bilingual</td></tr>
+        <tr><td class="item-name">Personnel</td><td>Social Media Director</td><td class="item-amt">$8,000</td><td class="item-amt">$24,000</td><td class="item-note">TikTok-native, bilingual</td></tr>
+        <tr><td class="item-name">Production</td><td>Freelance Videographer / Editor</td><td class="item-amt">$6,000</td><td class="item-amt">$18,000</td><td class="item-note">Part-time, event-based</td></tr>
+        <tr><td class="item-name">PR Agency</td><td>Mid-tier D.C. PR firm retainer</td><td class="item-amt">$15,000</td><td class="item-amt">$45,000</td><td class="item-note">Media booking focus</td></tr>
+        <tr><td class="item-name">Legal</td><td>FARA + 501(c)(3) setup</td><td class="item-amt">$8,000</td><td class="item-amt">$25,000</td><td class="item-note">One-time setup + monthly</td></tr>
+        <tr><td class="item-name">Travel</td><td>MCM + team travel (D.C./NY/Miami)</td><td class="item-amt">$15,000</td><td class="item-amt">$45,000</td><td class="item-note">Domestic only</td></tr>
+        <tr><td class="item-name">Technology</td><td>Media monitoring, social tools</td><td class="item-amt">$3,000</td><td class="item-amt">$9,000</td><td class="item-note">Meltwater/Sprout Social</td></tr>
+        <tr><td class="item-name">Events</td><td>1 diaspora rally (Miami)</td><td class="item-amt">—</td><td class="item-amt">$40,000</td><td class="item-note">Venue, production, security</td></tr>
+        <tr><td class="item-name">Contingency</td><td>Rapid response / unforeseen</td><td class="item-amt">—</td><td class="item-amt">$50,000</td><td class="item-note">10% buffer</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">90-Day Total — Shoestring</td><td class="item-amt" style="color:var(--amber);">~$292,000</td><td class="item-note">+ $200K reserve recommended</td></tr></tfoot>
+    </table>
+  </div>
+
+  <!-- TIER 2: SERIOUS -->
+  <div class="budget-tier">
+    <div class="tier-header tier-silver">
+      <div class="tier-icon">🥈</div>
+      <div>
+        <div class="tier-name">Serious — Full Media Campaign</div>
+        <div class="tier-desc">Full team, top-tier PR firm, professional production on every appearance. Executes 75% of the media plan at professional standard.</div>
+      </div>
+      <div class="tier-total">~$1.5M</div>
+    </div>
+    <table class="budget-table">
+      <thead><tr><th>Category</th><th>Item</th><th>Monthly</th><th>90-Day Total</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="item-name">Personnel</td><td>U.S. Communications Director</td><td class="item-amt">$18,000</td><td class="item-amt">$54,000</td><td class="item-note">Top-tier hire, ex-White House/campaign</td></tr>
+        <tr><td class="item-name">Personnel</td><td>Social Media Director + 1 Manager</td><td class="item-amt">$16,000</td><td class="item-amt">$48,000</td><td class="item-note">Director + community manager</td></tr>
+        <tr><td class="item-name">Personnel</td><td>Congressional Relations Director</td><td class="item-amt">$15,000</td><td class="item-amt">$45,000</td><td class="item-note">Former Hill staffer</td></tr>
+        <tr><td class="item-name">Personnel</td><td>Fundraising Director</td><td class="item-amt">$14,000</td><td class="item-amt">$42,000</td><td class="item-note">Donor relations + events</td></tr>
+        <tr><td class="item-name">Production</td><td>Full-time Videographer + Editor</td><td class="item-amt">$12,000</td><td class="item-amt">$36,000</td><td class="item-note">Travels with MCM</td></tr>
+        <tr><td class="item-name">PR Agency</td><td>Top-tier D.C. PR firm (SKDK/Mercury)</td><td class="item-amt">$35,000</td><td class="item-amt">$105,000</td><td class="item-note">Full service, media + government</td></tr>
+        <tr><td class="item-name">Lobbying</td><td>D.C. government relations firm</td><td class="item-amt">$25,000</td><td class="item-amt">$75,000</td><td class="item-note">Congressional outreach</td></tr>
+        <tr><td class="item-name">Legal</td><td>Full compliance counsel</td><td class="item-amt">$10,000</td><td class="item-amt">$35,000</td><td class="item-note">FARA, 501c3, donor compliance</td></tr>
+        <tr><td class="item-name">Travel</td><td>MCM + full team (domestic + intl)</td><td class="item-amt">$25,000</td><td class="item-amt">$75,000</td><td class="item-note">Includes European outreach trip</td></tr>
+        <tr><td class="item-name">Technology</td><td>Full media monitoring suite</td><td class="item-amt">$5,000</td><td class="item-amt">$15,000</td><td class="item-note">Meltwater + Cision + social tools</td></tr>
+        <tr><td class="item-name">Events</td><td>2 diaspora rallies + 1 donor event</td><td class="item-amt">—</td><td class="item-amt">$120,000</td><td class="item-note">Miami + Houston + NYC donor dinner</td></tr>
+        <tr><td class="item-name">Contingency</td><td>Rapid response buffer</td><td class="item-amt">—</td><td class="item-amt">$100,000</td><td class="item-note">Security, crisis comms, opportunistic</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">90-Day Total — Serious Campaign</td><td class="item-amt" style="color:#C8C8D8;">~$750,000</td><td class="item-note">+ $750K in reserve/pipeline recommended</td></tr></tfoot>
+    </table>
+  </div>
+
+  <!-- TIER 3: FULL FORCE -->
+  <div class="budget-tier">
+    <div class="tier-header tier-gold">
+      <div class="tier-icon">🥇</div>
+      <div>
+        <div class="tier-name">Full Force — Government-in-Waiting Operation</div>
+        <div class="tier-desc">Complete professional infrastructure. Executes 100% of the media and political strategy. Positions MCM to return to Venezuela as a recognized leader with a functioning office.</div>
+      </div>
+      <div class="tier-total">$3M–$5M+</div>
+    </div>
+    <table class="budget-table">
+      <thead><tr><th>Category</th><th>Item</th><th>Monthly</th><th>90-Day Total</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="item-name">Personnel</td><td>Full senior team (8 roles)</td><td class="item-amt">$120,000</td><td class="item-amt">$360,000</td><td class="item-note">All roles in buildout plan filled</td></tr>
+        <tr><td class="item-name">Production</td><td>Full in-house content studio</td><td class="item-amt">$30,000</td><td class="item-amt">$90,000</td><td class="item-note">2 videographers, editor, photographer</td></tr>
+        <tr><td class="item-name">PR Agency</td><td>Top-tier firm — full service</td><td class="item-amt">$50,000</td><td class="item-amt">$150,000</td><td class="item-note">Media + government + crisis comms</td></tr>
+        <tr><td class="item-name">Lobbying</td><td>Top D.C. government relations</td><td class="item-amt">$40,000</td><td class="item-amt">$120,000</td><td class="item-note">Akin Gump / BGR Group level</td></tr>
+        <tr><td class="item-name">Legal</td><td>Full legal team + compliance</td><td class="item-amt">$20,000</td><td class="item-amt">$65,000</td><td class="item-note">FARA, 501c3, international, IP</td></tr>
+        <tr><td class="item-name">Travel</td><td>Full team — global</td><td class="item-amt">$50,000</td><td class="item-amt">$150,000</td><td class="item-note">D.C., Europe, Latin America</td></tr>
+        <tr><td class="item-name">Events</td><td>4 major events + Congressional</td><td class="item-amt">—</td><td class="item-amt">$300,000</td><td class="item-note">Rallies, donor dinners, Reagan Library</td></tr>
+        <tr><td class="item-name">Media Buy</td><td>Strategic social media amplification</td><td class="item-amt">$30,000</td><td class="item-amt">$90,000</td><td class="item-note">Boosted content, targeted ads (diaspora)</td></tr>
+        <tr><td class="item-name">Technology</td><td>Full digital + CRM infrastructure</td><td class="item-amt">$10,000</td><td class="item-amt">$30,000</td><td class="item-note">Donor CRM, media monitoring, analytics</td></tr>
+        <tr><td class="item-name">Polling</td><td>U.S. opinion research on Venezuela</td><td class="item-amt">—</td><td class="item-amt">$80,000</td><td class="item-note">Diaspora + general public polling</td></tr>
+        <tr><td class="item-name">Contingency</td><td>Strategic reserve</td><td class="item-amt">—</td><td class="item-amt">$500,000</td><td class="item-note">Rapid response, security, opportunities</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">90-Day Total — Full Force</td><td class="item-amt" style="color:var(--gold);">~$1.9M</td><td class="item-note">Target raise: $3–5M to cover 90 days + 6-month runway</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════ FUNDING ASK ═══════════════════ -->
+<div class="internal-section" id="funding">
+  <div class="int-section-badge">🔐 Internal · Restricted</div>
+  <div class="section-eyebrow">Internal Section 04</div>
+  <div class="section-title">Funding Architecture & Donor Strategy</div>
+  <p class="section-intro">The forces working against María Corina Machado have billions of dollars. The Maduro regime, criminal organizations, and opportunistic international companies transact in the hundreds of millions. Against this, MCM has the most powerful currency in democracy: legitimacy, a Nobel Prize, and the will of 30 million Venezuelans. But legitimacy alone does not pay for a communications director or a PR firm. This section outlines how to raise the resources needed — legally, efficiently, and at the lowest friction possible for donors.</p>
+
+  <!-- DONOR TIERS -->
+  <div class="dash-section-title">Donor Tiers — The Ask Structure <span>Name Each Level</span></div>
+  <div class="donor-tier-grid">
+    <div class="donor-tier">
+      <div class="donor-amount">$250K+</div>
+      <div class="donor-tier-name">🏆 Founding Patron — "Libertad"</div>
+      <ul>
+        <li>Private briefing with MCM personally</li>
+        <li>Named in the founding documents of the transition office</li>
+        <li>Quarterly strategic updates from the core team</li>
+        <li>Invitation to all private donor events</li>
+        <li>Recognition in the democratic Venezuela foundation charter</li>
+      </ul>
+    </div>
+    <div class="donor-tier silver-tier">
+      <div class="donor-amount">$50K–$250K</div>
+      <div class="donor-tier-name">🥈 Strategic Supporter — "Esperanza"</div>
+      <ul>
+        <li>Annual private call with MCM or Chief of Staff</li>
+        <li>Monthly written updates on campaign progress</li>
+        <li>Invitation to major donor events in D.C. and Miami</li>
+        <li>Early access to policy documents and transition blueprints</li>
+      </ul>
+    </div>
+    <div class="donor-tier bronze-tier">
+      <div class="donor-amount">$5K–$50K</div>
+      <div class="donor-tier-name">🥉 Democracy Supporter — "Bravo Pueblo"</div>
+      <ul>
+        <li>Acknowledgment in annual donor report</li>
+        <li>Invitation to community events and rallies</li>
+        <li>Quarterly newsletter with strategic updates</li>
+        <li>Access to exclusive MCM video messages</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DONATION CHANNELS -->
+  <div class="dash-section-title">Donation Channels — Maximum Accessibility <span>Lowest Friction for Every Donor Type</span></div>
+
+  <div class="donation-grid">
+    <div class="donation-card">
+      <div class="donation-card-header d-bg-501">
+        <div class="donation-type">Channel 01 · U.S. Donors</div>
+        <div class="donation-title">501(c)(3) Tax-Deductible<br>Contributions</div>
+        <div class="donation-desc">The highest-value channel for U.S. individual and foundation donors. Contributions are fully tax-deductible, reducing the effective cost of giving by 30–40% for high-net-worth individuals.</div>
+      </div>
+      <div class="donation-card-body">
+        <ol class="donation-steps">
+          <li><span class="step-num">01</span>Establish or identify an existing 501(c)(3) public charity as the U.S. fiscal sponsor — focused on "democracy promotion" and "human rights in Venezuela"</li>
+          <li><span class="step-num">02</span>Legal counsel must ensure the nonprofit's activities align with IRS guidelines and do not constitute direct political campaign activity</li>
+          <li><span class="step-num">03</span>Set up ACH bank transfer, credit card (Stripe), and check donation options on a dedicated secure donation page</li>
+          <li><span class="step-num">04</span>Issue formal gift acknowledgment letters for all donations over $250 for tax purposes</li>
+          <li><span class="step-num">05</span>Target: U.S. family foundations, Venezuelan-American business owners, pro-democracy philanthropists, tech and finance donors</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="donation-card">
+      <div class="donation-card-header d-bg-advocacy">
+        <div class="donation-type">Channel 02 · U.S. Advocacy</div>
+        <div class="donation-title">Direct Advocacy &<br>Political Donations</div>
+        <div class="donation-desc">For donors who want to fund direct political advocacy, lobbying, and communications activity that falls outside 501(c)(3) scope. Not tax-deductible but unrestricted in use.</div>
+      </div>
+      <div class="donation-card-body">
+        <ol class="donation-steps">
+          <li><span class="step-num">01</span>Establish a separate 501(c)(4) social welfare organization — allows unlimited advocacy spending, issue ads, and direct lobbying</li>
+          <li><span class="step-num">02</span>Alternatively, accept direct donations to the Comando Con Venezuela operational account for unrestricted use</li>
+          <li><span class="step-num">03</span>FARA compliance review required if any activity is deemed to be on behalf of a foreign political party or government — obtain legal opinion first</li>
+          <li><span class="step-num">04</span>Donors: U.S. citizens and permanent residents only for 501(c)(4); foreign nationals may donate to the operational fund subject to legal review</li>
+          <li><span class="step-num">05</span>Target: Conservative PAC donors, Venezuelan-American political activists, D.C. policy community</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="donation-card">
+      <div class="donation-card-header d-bg-intl">
+        <div class="donation-type">Channel 03 · International</div>
+        <div class="donation-title">Offshore International<br>Wire Transfer</div>
+        <div class="donation-desc">For non-U.S. donors — Venezuelan diaspora in Europe and Latin America, international foundations, and foreign individuals who want to support the democratic transition directly.</div>
+      </div>
+      <div class="donation-card-body">
+        <ol class="donation-steps">
+          <li><span class="step-num">01</span>Establish a dedicated international receiving account — recommended jurisdiction: Spain (EU legal framework, large Venezuelan diaspora) or Panama</li>
+          <li><span class="step-num">02</span>Provide donors with full SWIFT/IBAN wire instructions, correspondent bank details, and a formal donation letter/receipt</li>
+          <li><span class="step-num">03</span>All international donations must be screened for AML (Anti-Money Laundering) and OFAC sanctions compliance — retain compliance counsel</li>
+          <li><span class="step-num">04</span>For large gifts ($100K+), conduct donor KYC (Know Your Customer) verification to protect the organization from reputational and legal risk</li>
+          <li><span class="step-num">05</span>Target: Venezuelan diaspora in Spain, Colombia, Chile; European pro-democracy foundations; Latin American business leaders; international family offices</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="donation-card">
+      <div class="donation-card-header d-bg-crypto">
+        <div class="donation-type">Channel 04 · Digital Assets</div>
+        <div class="donation-title">Cryptocurrency<br>Donations</div>
+        <div class="donation-desc">Particularly relevant for the Venezuelan diaspora and international donors in countries with currency controls or banking limitations. Bitcoin and USDC are the priority assets.</div>
+      </div>
+      <div class="donation-card-body">
+        <ol class="donation-steps">
+          <li><span class="step-num">01</span>Set up a multi-signature organizational crypto wallet (Bitcoin + Ethereum/USDC) using a custodial service like Coinbase Institutional or BitGo</li>
+          <li><span class="step-num">02</span>Publish wallet addresses and QR codes on the secure donation page — accept BTC, ETH, and USDC as primary assets</li>
+          <li><span class="step-num">03</span>All received crypto must be converted to USD within 24–48 hours to eliminate price volatility risk — use a regulated exchange</li>
+          <li><span class="step-num">04</span>U.S. crypto donors: donations of appreciated crypto to a 501(c)(3) are tax-deductible at fair market value — significant advantage for crypto holders</li>
+          <li><span class="step-num">05</span>Particularly strategic for Venezuelans inside Venezuela and diaspora in countries with strict banking controls who cannot send international wires easily</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOW FRICTION PRINCIPLES -->
+  <div class="dash-section-title">Low-Friction Donation Principles <span>Remove Every Barrier Between Intent and Action</span></div>
+
+  <div class="friction-box">
+    <h4>The Cardinal Rule of Fundraising</h4>
+    <p>Every additional step between a donor's decision to give and the moment money arrives in your account costs you 20–30% of donors. The goal is: <em>decide → click → done</em>. Every channel above must have a dedicated page, clear instructions, and immediate acknowledgment. Never make a donor ask twice how to give.</p>
+  </div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3>The Donation Landing Page Must Have</h3>
+      <ul>
+        <li>One-click credit card option (Stripe) — no account creation</li>
+        <li>Wire transfer instructions in both English and Spanish</li>
+        <li>Crypto wallet QR codes for BTC, ETH, USDC</li>
+        <li>Clear statement of how funds are used (ties to budget tiers)</li>
+        <li>Immediate email confirmation with tax receipt where applicable</li>
+        <li>Mobile-optimized — 60%+ of donors will be on phones</li>
+        <li>SSL secured and hosted on a domain MCM's team controls</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>The Donor Pitch — 3 Sentences</h3>
+      <ul>
+        <li><strong>"The Venezuelan people already voted."</strong> Edmundo González won by 30 points. The result was stolen.</li>
+        <li><strong>"María Corina is the world's most credible democratic leader without a country."</strong> A Nobel Prize winner. 92% of the opposition vote. Backed by 30 million Venezuelans.</li>
+        <li><strong>"For the first time, the conditions for real change exist."</strong> Maduro is gone. Trump is engaged. The window is open — but only if MCM has the resources to walk through it now.</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>Top Donor Prospect Pools</h3>
+      <ul>
+        <li>Venezuelan-American business owners (Florida, Texas, New York)</li>
+        <li>U.S. pro-democracy and anti-socialist foundations</li>
+        <li>Conservative family foundations aligned with Trump's foreign policy</li>
+        <li>Latin American business leaders in Colombia, Panama, Chile</li>
+        <li>Venezuelan diaspora professionals in Spain and Europe</li>
+        <li>U.S. oil and energy companies with Venezuela interest</li>
+        <li>International pro-democracy NGOs (NED, IRI, NDI as partners)</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3>Fundraising Events — 90-Day Calendar</h3>
+      <ul>
+        <li><strong>Week 3:</strong> Intimate D.C. donor dinner — 20 guests, $50K+ ask, MCM present</li>
+        <li><strong>Week 6:</strong> Miami Venezuelan-American community fundraiser — broad base, $1K–$25K range</li>
+        <li><strong>Week 8:</strong> New York finance/business donor breakfast — Wall Street, hedge funds, family offices</li>
+        <li><strong>Week 10:</strong> Virtual international donor call — diaspora in Spain, Colombia, Chile</li>
+        <li><strong>Week 12:</strong> Major gala/event tied to a policy announcement — $250K+ target</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-metric-row">
+    <div class="sm-badge"><span class="sm-lbl">Shoestring Raise Target</span><span class="sm-val">$500K</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Serious Campaign Target</span><span class="sm-val">$1.5M</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Full Force Target</span><span class="sm-val">$3–5M+</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Donation Channels</span><span class="sm-val">4 active</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-badge"><span class="sm-lbl">Fundraising Events</span><span class="sm-val">5 in 90 days</span></div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <div class="doc-footer">
   <div class="footer-brand"><strong>Strategic Communications Plan</strong> · María Corina Machado · Washington D.C.</div>
@@ -2365,52 +3371,93 @@
 </div><!-- end #app-content -->
 
 <script>
-  // ── PASSWORD GATE ──
-  // SHA-256 hash of the password "HastaElFinal2026" — change hash to change password
-  // To generate a new hash: https://emn178.github.io/online-tools/sha256.html
-  const CORRECT_HASH = 'a8f0e31c2b9d7f4e6a1c5b3d8e2f0a9c4b7d6e1f3a2c5b8d9e0f4a1c6b3d7e2';
-
-  async function hashString(str) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-  }
-
+  // ── PASSWORD 1: MEDIA PLAN ──
   async function checkPW() {
     const input = document.getElementById('pw-input');
     const err = document.getElementById('pw-error');
     const val = input.value.trim();
     if (!val) return;
-
-    const hash = await hashString(val);
-
-    // Direct password check (no hash needed for client-side gate)
-    // Password is: HastaElFinal2026
     if (val === 'HastaElFinal2026') {
       document.getElementById('pw-gate').style.display = 'none';
       document.getElementById('app-content').style.display = 'block';
       sessionStorage.setItem('mcm_auth', '1');
     } else {
       input.classList.remove('shake');
-      void input.offsetWidth; // reflow to restart animation
+      void input.offsetWidth;
       input.classList.add('shake');
       err.classList.add('visible');
       input.value = '';
-      setTimeout(() => {
-        input.classList.remove('shake');
-        err.classList.remove('visible');
-      }, 3000);
+      setTimeout(() => { input.classList.remove('shake'); err.classList.remove('visible'); }, 3000);
     }
   }
 
-  // Persist auth across tab refresh (session only)
   if (sessionStorage.getItem('mcm_auth') === '1') {
     document.getElementById('pw-gate').style.display = 'none';
     document.getElementById('app-content').style.display = 'block';
   }
 
-  // ── NAVIGATION ──
+  // ── PASSWORD 2: INTERNAL SECTIONS ──
+  let pendingInternalSection = null;
+
+  function requestInternal(sectionId) {
+    if (sessionStorage.getItem('mcm_int_auth') === '1') {
+      showInternalSection(sectionId);
+    } else {
+      pendingInternalSection = sectionId;
+      document.getElementById('internal-gate').classList.add('active');
+      setTimeout(() => document.getElementById('int-input').focus(), 100);
+    }
+  }
+
+  function checkIntPW() {
+    const input = document.getElementById('int-input');
+    const err = document.getElementById('int-error');
+    const val = input.value.trim();
+    if (!val) return;
+    if (val === 'GloriaAlBravoPueblo2026') {
+      document.getElementById('internal-gate').classList.remove('active');
+      sessionStorage.setItem('mcm_int_auth', '1');
+      input.value = '';
+      if (pendingInternalSection) {
+        showInternalSection(pendingInternalSection);
+        pendingInternalSection = null;
+      }
+    } else {
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      err.classList.add('visible');
+      input.value = '';
+      setTimeout(() => { input.classList.remove('shake'); err.classList.remove('visible'); }, 3000);
+    }
+  }
+
+  function cancelIntGate() {
+    document.getElementById('internal-gate').classList.remove('active');
+    document.getElementById('int-input').value = '';
+    pendingInternalSection = null;
+  }
+
+  function showInternalSection(id) {
+    // Hide all public sections and internal sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.internal-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    // Highlight the correct nav tab
+    document.querySelectorAll('.nav-tab').forEach(t => {
+      if (t.getAttribute('onclick') && t.getAttribute('onclick').includes(id)) {
+        t.classList.add('active');
+      }
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── PUBLIC NAVIGATION ──
   function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.internal-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
