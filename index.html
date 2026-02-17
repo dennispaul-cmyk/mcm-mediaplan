@@ -1436,39 +1436,132 @@
     line-height: 1.5;
   }
   .donor-tier li::before { content: '✦ '; color: var(--gold); font-size: 8px; }
+
+  /* ─── LANGUAGE TOGGLE ─── */
+  .lang-toggle-wrap {
+    position: fixed;
+    top: 14px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(11,27,53,0.95);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 20px;
+    padding: 5px 12px 5px 8px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .lang-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    transition: color 0.2s;
+    user-select: none;
+    cursor: pointer;
+  }
+  .lang-label.active-lang { color: var(--gold); font-weight: bold; }
+  .lang-switch {
+    position: relative;
+    width: 38px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .lang-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .lang-slider {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 20px;
+    transition: 0.25s;
+  }
+  .lang-slider::before {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    left: 2px; top: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .lang-switch input:checked + .lang-slider::before { transform: translateX(18px); }
+  .gate-lang-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+  .gate-lang-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 12px;
+    padding: 5px 14px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+  }
+  .gate-lang-btn.glb-active {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
 </style>
 </head>
 <body>
 
+<!-- FIXED LANGUAGE TOGGLE (visible after login) -->
+<div class="lang-toggle-wrap" id="lang-toggle-wrap" style="display:none;">
+  <span class="lang-label active-lang" id="lbl-en" onclick="setLang('en')">EN</span>
+  <label class="lang-switch">
+    <input type="checkbox" id="lang-checkbox" onchange="toggleLang(this)">
+    <span class="lang-slider"></span>
+  </label>
+  <span class="lang-label" id="lbl-es" onclick="setLang('es')">ES</span>
+</div>
+
 <!-- PASSWORD GATE -->
 <div id="pw-gate">
   <div class="pw-box">
-    <div class="pw-kicker">Confidential · Restricted Access</div>
-    <div class="pw-logo">María Corina Machado<br><span>Strategic Media Plan</span></div>
-    <div class="pw-subtitle">Confidential strategic communications plan.<br>From safe houses in Caracas to Washington D.C. —<br>the 90-day plan to complete the mission.<br>Authorized personnel only.</div>
+    <div class="gate-lang-row">
+      <button class="gate-lang-btn glb-active" id="gate-en-btn" onclick="setLang('en')">🇺🇸 English</button>
+      <button class="gate-lang-btn" id="gate-es-btn" onclick="setLang('es')">🇻🇪 Español</button>
+    </div>
+    <div class="pw-kicker" data-en="Confidential · Restricted Access" data-es="Confidencial · Acceso Restringido">Confidential · Restricted Access</div>
+    <div class="pw-logo">María Corina Machado<br><span data-en="Strategic Media Plan" data-es="Plan Estratégico de Medios">Strategic Media Plan</span></div>
+    <div class="pw-subtitle" data-en="Confidential strategic communications plan.<br>From safe houses in Caracas to Washington D.C. —<br>the 90-day plan to complete the mission.<br>Authorized personnel only." data-es="Plan estratégico de comunicaciones confidencial.<br>De casas de seguridad en Caracas a Washington D.C. —<br>el plan de 90 días para completar la misión.<br>Solo personal autorizado.">Confidential strategic communications plan.<br>From safe houses in Caracas to Washington D.C. —<br>the 90-day plan to complete the mission.<br>Authorized personnel only.</div>
     <div class="pw-divider"></div>
     <div class="pw-field-wrap">
-      <input type="password" id="pw-input" placeholder="Enter access code" autocomplete="off" onkeydown="if(event.key==='Enter') checkPW()">
+      <input type="password" id="pw-input" data-en-placeholder="Enter access code" data-es-placeholder="Ingrese el código de acceso" placeholder="Enter access code" autocomplete="off" onkeydown="if(event.key==='Enter') checkPW()">
     </div>
-    <button id="pw-btn" onclick="checkPW()">Unlock Document</button>
-    <div id="pw-error">Incorrect access code. Please try again.</div>
-    <div class="pw-hint">Contact the communications team for access</div>
+    <button id="pw-btn" onclick="checkPW()" data-en="Unlock Document" data-es="Desbloquear Documento">Unlock Document</button>
+    <div id="pw-error" data-en="Incorrect access code. Please try again." data-es="Código incorrecto. Por favor intente de nuevo.">Incorrect access code. Please try again.</div>
+    <div class="pw-hint" data-en="Contact the communications team for access" data-es="Contacte al equipo de comunicaciones para acceso">Contact the communications team for access</div>
   </div>
 </div>
 
 <!-- INTERNAL SECTION PASSWORD GATE -->
 <div id="internal-gate">
   <div class="int-pw-box">
-    <div class="int-banner">⚠ Restricted · Internal Use Only</div>
-    <div class="int-title">Internal Access Required</div>
-    <div class="int-subtitle">This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only.</div>
+    <div class="int-banner" data-en="⚠ Restricted · Internal Use Only" data-es="⚠ Restringido · Solo Uso Interno">⚠ Restricted · Internal Use Only</div>
+    <div class="int-title" data-en="Internal Access Required" data-es="Acceso Interno Requerido">Internal Access Required</div>
+    <div class="int-subtitle" data-en="This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only." data-es="Esta sección contiene información organizacional,<br>financiera y de donantes confidencial.<br>Solo para liderazgo senior.">This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only.</div>
     <div class="int-divider"></div>
     <div class="int-field-wrap">
-      <input type="password" id="int-input" placeholder="Enter internal code" autocomplete="off" onkeydown="if(event.key==='Enter') checkIntPW()">
+      <input type="password" id="int-input" data-en-placeholder="Enter internal code" data-es-placeholder="Ingrese el código interno" placeholder="Enter internal code" autocomplete="off" onkeydown="if(event.key==='Enter') checkIntPW()">
     </div>
-    <button id="int-btn" onclick="checkIntPW()">Access Internal Documents</button>
-    <div id="int-error">Incorrect code. Access denied.</div>
-    <button id="int-cancel" onclick="cancelIntGate()">← Return to Media Plan</button>
+    <button id="int-btn" onclick="checkIntPW()" data-en="Access Internal Documents" data-es="Acceder a Documentos Internos">Access Internal Documents</button>
+    <div id="int-error" data-en="Incorrect code. Access denied." data-es="Código incorrecto. Acceso denegado.">Incorrect code. Access denied.</div>
+    <button id="int-cancel" onclick="cancelIntGate()" data-en="← Return to Media Plan" data-es="← Volver al Plan de Medios">← Return to Media Plan</button>
   </div>
 </div>
 
@@ -1477,44 +1570,44 @@
 
 <!-- HEADER -->
 <div class="header">
-  <div class="header-kicker">Strategic Communications Brief · Confidential · Prepared by Dennis Paul</div>
-  <h1>María Corina Machado:<br><span>U.S. Media & Influence Strategy</span></h1>
-  <p class="header-sub">A 90-day roadmap for maximum visibility, credibility, and diplomatic leverage — positioned from Washington, D.C. for global impact.</p>
+  <div class="header-kicker" data-en="Strategic Communications Brief · Confidential · Prepared by Dennis Paul" data-es="Resumen de Comunicaciones Estratégicas · Confidencial · Preparado por Dennis Paul">Strategic Communications Brief · Confidential · Prepared by Dennis Paul</div>
+  <h1 data-en="María Corina Machado:<br><span>U.S. Media & Influence Strategy</span>" data-es="María Corina Machado:<br><span>Estrategia de Medios e Influencia en EE.UU.</span>">María Corina Machado:<br><span>U.S. Media & Influence Strategy</span></h1>
+  <p class="header-sub" data-en="A 90-day roadmap for maximum visibility, credibility, and diplomatic leverage — positioned from Washington, D.C. for global impact." data-es="Una hoja de ruta de 90 días para máxima visibilidad, credibilidad y apalancamiento diplomático — posicionada desde Washington, D.C. para impacto global.">A 90-day roadmap for maximum visibility, credibility, and diplomatic leverage — positioned from Washington, D.C. for global impact.</p>
   <div class="header-meta">
-    <div class="meta-pill">February 2026</div>
-    <div class="meta-pill">Duration: 90 Days</div>
-    <div class="meta-pill">Status: Active Deployment</div>
-    <div class="meta-pill">Nobel Laureate · Venezuelan Opposition Leader</div>
+    <div class="meta-pill" data-en="February 2026" data-es="Febrero 2026">February 2026</div>
+    <div class="meta-pill" data-en="Duration: 90 Days" data-es="Duración: 90 Días">Duration: 90 Days</div>
+    <div class="meta-pill" data-en="Status: Active Deployment" data-es="Estado: Despliegue Activo">Status: Active Deployment</div>
+    <div class="meta-pill" data-en="Nobel Laureate · Venezuelan Opposition Leader" data-es="Premio Nobel · Líder de la Oposición Venezolana">Nobel Laureate · Venezuelan Opposition Leader</div>
   </div>
 </div>
 
 <!-- NAV -->
 <div class="nav-tabs">
-  <button class="nav-tab" onclick="showSection('situation')">Situation</button>
-  <button class="nav-tab" onclick="showSection('objectives')">Objectives</button>
-  <button class="nav-tab" onclick="showSection('media')">Media Plan</button>
-  <button class="nav-tab" onclick="showSection('social')">Social Media</button>
-  <button class="nav-tab" onclick="showSection('messaging')">Messaging</button>
-  <button class="nav-tab" onclick="showSection('timeline')">Timeline</button>
-  <button class="nav-tab" onclick="showSection('checklist')">Action Checklist</button>
-  <button class="nav-tab" onclick="showSection('dashboard')">📊 Dashboard</button>
-  <button class="nav-tab" onclick="showSection('risks')">Risks & Mitigation</button>
-  <button class="nav-tab" style="border-left: 1px solid rgba(155,35,53,0.4); color: #E05A6A;" onclick="requestInternal('org-current')">🔐 Current Org</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('org-needed')">🔐 Urgent Buildout</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('budget')">🔐 Budget</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('funding')">🔐 Funding Ask</button>
+  <button class="nav-tab" onclick="showSection('situation')" data-en="Situation" data-es="Situación">Situation</button>
+  <button class="nav-tab" onclick="showSection('objectives')" data-en="Objectives" data-es="Objetivos">Objectives</button>
+  <button class="nav-tab" onclick="showSection('media')" data-en="Media Plan" data-es="Plan de Medios">Media Plan</button>
+  <button class="nav-tab" onclick="showSection('social')" data-en="Social Media" data-es="Redes Sociales">Social Media</button>
+  <button class="nav-tab" onclick="showSection('messaging')" data-en="Messaging" data-es="Mensajes Clave">Messaging</button>
+  <button class="nav-tab" onclick="showSection('timeline')" data-en="Timeline" data-es="Cronograma">Timeline</button>
+  <button class="nav-tab" onclick="showSection('checklist')" data-en="Action Checklist" data-es="Lista de Acciones">Action Checklist</button>
+  <button class="nav-tab" onclick="showSection('dashboard')" data-en="📊 Dashboard" data-es="📊 Panel de Control">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showSection('risks')" data-en="Risks & Mitigation" data-es="Riesgos y Mitigación">Risks & Mitigation</button>
+  <button class="nav-tab" style="border-left: 1px solid rgba(155,35,53,0.4); color: #E05A6A;" onclick="requestInternal('org-current')" data-en="🔐 Current Org" data-es="🔐 Org. Actual">🔐 Current Org</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('org-needed')" data-en="🔐 Urgent Buildout" data-es="🔐 Expansión Urgente">🔐 Urgent Buildout</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('budget')" data-en="🔐 Budget" data-es="🔐 Presupuesto">🔐 Budget</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('funding')" data-en="🔐 Funding Ask" data-es="🔐 Solicitud de Fondos">🔐 Funding Ask</button>
 </div>
 
 <!-- ═══════════════════ SITUATION ═══════════════════ -->
 <div class="section active" id="situation">
-  <div class="section-eyebrow">Section 01</div>
-  <div class="section-title">Situation Assessment</div>
-  <p class="section-intro">For more than a year, María Corina Machado ran Venezuela's opposition movement from solitary confinement in safe houses scattered across Venezuela — hunted, isolated, and at constant risk of arrest, imprisonment, or worse. When she was awarded the 2025 Nobel Peace Prize, she made one of the most courageous decisions in modern political history: she came out of hiding, risked her life to escape from Venezuela — where capture meant certain imprisonment — and traveled to Oslo to accept the Nobel Prize on the world stage. It was an act of extraordinary personal bravery that captured global attention and moral authority simultaneously.</p>
-  <p class="section-intro" style="margin-top:-30px;">After accepting the award in Oslo and living briefly in undisclosed locations in Europe, MCM resurfaced in Washington D.C. for a historic meeting with President Trump. In a symbolically powerful gesture, she presented Trump with her Nobel Peace Prize medal — an expression of gratitude for his bold decision to pursue Maduro as a criminal cartel leader, bring him to face justice in the United States, and in doing so, pave the way for MCM's opposition movement to participate in a transition to free and fair elections and liberate the Venezuelan people — including the members of its armed forces — from decades of criminal, dictatorial rule. The window to complete that liberation is now open. It is narrow. And it will not stay open for long.</p>
+  <div class="section-eyebrow" data-en="Section 01" data-es="Sección 01">Section 01</div>
+  <div class="section-title" data-en="Situation Assessment" data-es="Evaluación de la Situación">Situation Assessment</div>
+  <p class="section-intro" data-en="For more than a year, María Corina Machado ran Venezuela's opposition movement from solitary confinement in safe houses scattered across Venezuela — hunted, isolated, and at constant risk of arrest, imprisonment, or worse. When she was awarded the 2025 Nobel Peace Prize, she made one of the most courageous decisions in modern political history: she came out of hiding, risked her life to escape from Venezuela — where capture meant certain imprisonment — and traveled to Oslo to accept the Nobel Prize on the world stage. It was an act of extraordinary personal bravery that captured global attention and moral authority simultaneously." data-es="Por más de un año, María Corina Machado dirigió el movimiento de oposición de Venezuela desde un confinamiento solitario en casas de seguridad dispersas por el país — perseguida, aislada y en constante riesgo de arresto, encarcelamiento o algo peor. Cuando recibió el Premio Nobel de la Paz 2025, tomó una de las decisiones más valientes de la historia política moderna: salió de su escondite, arriesgó su vida para escapar de Venezuela — donde su captura significaba prisión segura — y viajó a Oslo para aceptar el Premio Nobel ante el mundo. Fue un acto de valentía personal extraordinaria que capturó la atención global y la autoridad moral simultáneamente.">For more than a year, María Corina Machado ran Venezuela's opposition movement from solitary confinement in safe houses scattered across Venezuela — hunted, isolated, and at constant risk of arrest, imprisonment, or worse. When she was awarded the 2025 Nobel Peace Prize, she made one of the most courageous decisions in modern political history: she came out of hiding, risked her life to escape from Venezuela — where capture meant certain imprisonment — and traveled to Oslo to accept the Nobel Prize on the world stage. It was an act of extraordinary personal bravery that captured global attention and moral authority simultaneously.</p>
+  <p class="section-intro" style="margin-top:-30px;" data-en="After accepting the award in Oslo and living briefly in undisclosed locations in Europe, MCM resurfaced in Washington D.C. for a historic meeting with President Trump. In a symbolically powerful gesture, she presented Trump with her Nobel Peace Prize medal — an expression of gratitude for his bold decision to pursue Maduro as a criminal cartel leader, bring him to face justice in the United States, and in doing so, pave the way for MCM's opposition movement to participate in a transition to free and fair elections and liberate the Venezuelan people — including the members of its armed forces — from decades of criminal, dictatorial rule. The window to complete that liberation is now open. It is narrow. And it will not stay open for long." data-es="Tras aceptar el premio en Oslo y vivir brevemente en lugares no revelados en Europa, MCM reapareció en Washington D.C. para un encuentro histórico con el Presidente Trump. En un gesto simbólicamente poderoso, le presentó a Trump su medalla del Premio Nobel — una expresión de gratitud por su valiente decisión de perseguir a Maduro como líder de un cartel criminal, llevarlo a enfrentar la justicia en Estados Unidos y, al hacerlo, allanar el camino para que el movimiento opositor de MCM participe en una transición hacia elecciones libres y justas y libere al pueblo venezolano — incluidos los miembros de sus fuerzas armadas — de décadas de gobierno criminal y dictatorial. La ventana para completar esa liberación está abierta. Es estrecha. Y no permanecerá abierta por mucho tiempo.">After accepting the award in Oslo and living briefly in undisclosed locations in Europe, MCM resurfaced in Washington D.C. for a historic meeting with President Trump. In a symbolically powerful gesture, she presented Trump with her Nobel Peace Prize medal — an expression of gratitude for his bold decision to pursue Maduro as a criminal cartel leader, bring him to face justice in the United States, and in doing so, pave the way for MCM's opposition movement to participate in a transition to free and fair elections and liberate the Venezuelan people — including the members of its armed forces — from decades of criminal, dictatorial rule. The window to complete that liberation is now open. It is narrow. And it will not stay open for long.</p>
 
   <div class="situation-grid">
     <div class="sit-card">
-      <h3>Assets & Tailwinds</h3>
+      <h3 data-en="Assets & Tailwinds" data-es="Activos y Vientos a Favor">Assets & Tailwinds</h3>
       <ul>
         <li>Ran the opposition for 1+ year from safe houses inside Venezuela — in solitary confinement hiding — demonstrating extraordinary courage and commitment</li>
         <li>Made the courageous decision to risk her life to escape Venezuela, travel to Oslo, and accept the Nobel Peace Prize on the world stage — a globally televised act of bravery</li>
@@ -1528,7 +1621,7 @@
       </ul>
     </div>
     <div class="sit-card red">
-      <h3>Challenges & Headwinds</h3>
+      <h3 data-en="Challenges & Headwinds" data-es="Desafíos y Vientos en Contra">Challenges & Headwinds</h3>
       <ul>
         <li>Trump publicly questioned her ability to lead Venezuela (Jan. 3)</li>
         <li>Trump is backing Delcy Rodríguez as acting president</li>
@@ -1541,11 +1634,11 @@
       </ul>
     </div>
     <div class="sit-card">
-      <h3>Strategic Opportunity</h3>
+      <h3 data-en="Strategic Opportunity" data-es="Oportunidad Estratégica">Strategic Opportunity</h3>
       <p>MCM's escape from Venezuela and her Nobel Prize acceptance in Oslo was one of the most watched acts of political courage in recent memory. She is now in Washington with something no other figure in the Venezuela story possesses: simultaneous credibility among the Venezuelan people who watched her risk everything, the global democratic community who awarded her its highest honor, and the Trump White House she has personally engaged. Her job now is to be <em>indispensable</em> — to Trump, to Congress, to the American public, and to the 30 million Venezuelans watching from exile and from within Venezuela itself.</p>
     </div>
     <div class="sit-card">
-      <h3>The Core Communications Challenge</h3>
+      <h3 data-en="The Core Communications Challenge" data-es="El Desafío Central de Comunicación">The Core Communications Challenge</h3>
       <p>She must thread a delicate needle — expressing genuine gratitude for Trump's decisive action against Maduro while simultaneously asserting her own political agency and legitimacy as Venezuela's true democratic leader. She cannot be Trump's spokesperson for Venezuela. She must be <em>Venezuela's voice to Trump</em>. The Nobel Prize is her passport — it insulates her from partisan attack and provides moral authority for any audience. Every media appearance must reinforce this distinction while keeping the pressure on for a swift transition to free and fair elections.</p>
     </div>
   </div>
@@ -1634,24 +1727,24 @@
 
 <!-- ═══════════════════ OBJECTIVES ═══════════════════ -->
 <div class="section" id="objectives">
-  <div class="section-eyebrow">Section 02</div>
-  <div class="section-title">Strategic Objectives</div>
+  <div class="section-eyebrow" data-en="Section 02" data-es="Sección 02">Section 02</div>
+  <div class="section-title" data-en="Strategic Objectives" data-es="Objetivos Estratégicos">Strategic Objectives</div>
   <p class="section-intro">Three interlocking objectives must be pursued simultaneously. Each media placement, social post, and public statement must serve at least two of these pillars.</p>
 
   <div class="pillars">
     <div class="pillar">
       <div class="pillar-num">01</div>
-      <h3>Win the American Room</h3>
+      <h3 data-en="Win the American Room" data-es="Conquistar el Escenario Estadounidense">Win the American Room</h3>
       <p>Build deep, broad credibility with the Trump administration, Republican and Democrat members of Congress, and the American public. The goal is to become the default authoritative voice on Venezuela — the person every journalist and policymaker calls first. Translate the Nobel Prize into genuine domestic American political capital.</p>
     </div>
     <div class="pillar">
       <div class="pillar-num">02</div>
-      <h3>Own the Venezuela Narrative</h3>
+      <h3 data-en="Own the Venezuela Narrative" data-es="Controlar la Narrativa sobre Venezuela">Own the Venezuela Narrative</h3>
       <p>Prevent the Trump administration from defining Venezuela's future without her. Be loudly, visibly, and consistently the voice of 30 million Venezuelans. Ensure that any transition plan involves the democratic opposition and Edmundo González. Counter the Delcy Rodríguez legitimization with compelling, persistent media presence.</p>
     </div>
     <div class="pillar">
       <div class="pillar-num">03</div>
-      <h3>Build a Global Coalition</h3>
+      <h3 data-en="Build a Global Coalition" data-es="Construir una Coalición Global">Build a Global Coalition</h3>
       <p>Use the U.S. platform to reinforce and expand international support — from Latin American governments to European democracies to the Venezuelan diaspora worldwide. Social media becomes the tool to organize the diaspora, maintain hope inside Venezuela, and signal to other democratic movements globally.</p>
     </div>
   </div>
@@ -1704,8 +1797,8 @@
 
 <!-- ═══════════════════ MEDIA PLAN ═══════════════════ -->
 <div class="section" id="media">
-  <div class="section-eyebrow">Section 03</div>
-  <div class="section-title">U.S. Media Placement Plan</div>
+  <div class="section-eyebrow" data-en="Section 03" data-es="Sección 03">Section 03</div>
+  <div class="section-title" data-en="U.S. Media Placement Plan" data-es="Plan de Colocación en Medios en EE.UU.">U.S. Media Placement Plan</div>
   <p class="section-intro">Placements are organized by audience reach, political alignment, and strategic importance. Priority 1 targets should be booked within the first 30 days. Priority 2 targets fill the 30–90 day window. All appearances should be preceded by tailored briefing notes for that outlet's specific audience.</p>
 
   <div class="section-metric-row">
@@ -1934,8 +2027,8 @@
 
 <!-- ═══════════════════ SOCIAL MEDIA ═══════════════════ -->
 <div class="section" id="social">
-  <div class="section-eyebrow">Section 04</div>
-  <div class="section-title">Social Media Strategy</div>
+  <div class="section-eyebrow" data-en="Section 04" data-es="Sección 04">Section 04</div>
+  <div class="section-title" data-en="Social Media Strategy" data-es="Estrategia de Redes Sociales">Social Media Strategy</div>
   <p class="section-intro">Social media is simultaneously a publishing platform, a diplomatic channel, a fundraising tool, and the primary line of communication to Venezuelans inside Venezuela. Each platform requires a distinct voice, cadence, and content strategy. The goal is rapid follower growth while maintaining the dignity and authority of a Nobel laureate and head of state-in-waiting.</p>
 
   <div class="section-metric-row">
@@ -2152,8 +2245,8 @@
 
 <!-- ═══════════════════ MESSAGING ═══════════════════ -->
 <div class="section" id="messaging">
-  <div class="section-eyebrow">Section 05</div>
-  <div class="section-title">Core Messaging Framework</div>
+  <div class="section-eyebrow" data-en="Section 05" data-es="Sección 05">Section 05</div>
+  <div class="section-title" data-en="Core Messaging Framework" data-es="Marco de Mensajes Clave">Core Messaging Framework</div>
   <p class="section-intro">All communications — from a 280-character tweet to a 3-hour podcast — must be anchored to these core messages. Repetition is the engine of credibility. Consistency is indistinguishable from conviction.</p>
 
   <div class="message-box">
@@ -2242,7 +2335,7 @@
   <div class="section-eyebrow" style="margin-bottom:16px;">Language and Tone Guidelines</div>
   <div class="situation-grid">
     <div class="sit-card">
-      <h3>Always Use</h3>
+      <h3 data-en="Always Use" data-es="Siempre Usar">Always Use</h3>
       <ul>
         <li>"Democratic transition" — not "regime change"</li>
         <li>"The Venezuelan people" — center the citizens, not herself</li>
@@ -2253,7 +2346,7 @@
       </ul>
     </div>
     <div class="sit-card red">
-      <h3>Never Use</h3>
+      <h3 data-en="Never Use" data-es="Nunca Usar">Never Use</h3>
       <ul>
         <li>Partisan U.S. political language (don't attack Biden, Democrats, or Republicans)</li>
         <li>Military or interventionist language — she is a peace prize winner</li>
@@ -2264,7 +2357,7 @@
       </ul>
     </div>
     <div class="sit-card">
-      <h3>When Asked About "Chaos" or "Too Fast"</h3>
+      <h3 data-en="When Asked About &quot;Chaos&quot; or &quot;Too Fast&quot;" data-es="Cuando le Pregunten sobre &quot;Caos&quot; o &quot;Demasiado Rápido&quot;">When Asked About "Chaos" or "Too Fast"</h3>
       <ul>
         <li><strong>Acknowledge the concern:</strong> "I understand the lessons of Iraq and Afghanistan weigh heavily on American policymakers."</li>
         <li><strong>Then pivot immediately:</strong> "But Venezuela is not Iraq or Afghanistan. We have a democratic history, a unified people, and a military waiting to be freed from a corrupt elite."</li>
@@ -2278,8 +2371,8 @@
 
 <!-- ═══════════════════ TIMELINE ═══════════════════ -->
 <div class="section" id="timeline">
-  <div class="section-eyebrow">Section 06</div>
-  <div class="section-title">90-Day Execution Timeline</div>
+  <div class="section-eyebrow" data-en="Section 06" data-es="Sección 06">Section 06</div>
+  <div class="section-title" data-en="90-Day Execution Timeline" data-es="Cronograma de Ejecución de 90 Días">90-Day Execution Timeline</div>
   <p class="section-intro">The plan is divided into three 30-day phases with escalating ambition. Phase 1 is about establishing infrastructure and landing high-impact placements. Phase 2 is about broadening reach. Phase 3 is about converting visibility into tangible political outcomes.</p>
 
   <div class="timeline">
@@ -2353,11 +2446,11 @@
 
 <!-- ═══════════════════ CHECKLIST ═══════════════════ -->
 <div class="section" id="checklist">
-  <div class="section-eyebrow">Section 07</div>
-  <div class="section-title">Action Checklist</div>
+  <div class="section-eyebrow" data-en="Section 07" data-es="Sección 07">Section 07</div>
+  <div class="section-title" data-en="Action Checklist" data-es="Lista de Acciones Prioritarias">Action Checklist</div>
   <p class="section-intro">Click each item to track progress. These are the highest-priority actions — grouped by function. Complete Week 1 items before moving to Phase 2 actions.</p>
 
-  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);">▸ WEEK 1 — INFRASTRUCTURE</div>
+  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);" data-en="▸ WEEK 1 — INFRASTRUCTURE" data-es="▸ SEMANA 1 — INFRAESTRUCTURA" data-en="▸ WEEK 1 — INFRASTRUCTURE" data-es="▸ SEMANA 1 — INFRAESTRUCTURA">▸ WEEK 1 — INFRASTRUCTURE</div>
   <ul class="checklist" id="checklistItems">
     <li>
       <div class="check-box" onclick="toggleCheck(this)"></div>
@@ -2386,7 +2479,7 @@
   </ul>
 
   <br>
-  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);">▸ WEEKS 1–4 — HIGH PRIORITY MEDIA</div>
+  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);" data-en="▸ WEEKS 1–4 — HIGH PRIORITY MEDIA" data-es="▸ SEMANAS 1–4 — MEDIOS DE ALTA PRIORIDAD" data-en="▸ WEEKS 1–4 — HIGH PRIORITY MEDIA" data-es="▸ SEMANAS 1–4 — MEDIOS DE ALTA PRIORIDAD">▸ WEEKS 1–4 — HIGH PRIORITY MEDIA</div>
   <ul class="checklist">
     <li>
       <div class="check-box" onclick="toggleCheck(this)"></div>
@@ -2431,7 +2524,7 @@
   </ul>
 
   <br>
-  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);">▸ WEEKS 5–12 — PHASE 2 & 3</div>
+  <div class="section-eyebrow" style="margin-bottom:12px; color: var(--gold-light);" data-en="▸ WEEKS 5–12 — PHASE 2 &amp; 3" data-es="▸ SEMANAS 5–12 — FASE 2 Y 3">▸ WEEKS 5–12 — PHASE 2 & 3</div>
   <ul class="checklist">
     <li>
       <div class="check-box" onclick="toggleCheck(this)"></div>
@@ -2478,8 +2571,8 @@
 
 <!-- ═══════════════════ DASHBOARD ═══════════════════ -->
 <div class="section" id="dashboard">
-  <div class="section-eyebrow">Section 09 · Live Tracking</div>
-  <div class="section-title">Metrics Dashboard & KPI Tracker</div>
+  <div class="section-eyebrow" data-en="Section 09 · Live Tracking" data-es="Sección 09 · Seguimiento en Vivo">Section 09 · Live Tracking</div>
+  <div class="section-title" data-en="Metrics Dashboard & KPI Tracker" data-es="Panel de Métricas e Indicadores Clave">Metrics Dashboard & KPI Tracker</div>
   <p class="section-intro">Enter actual numbers in the editable fields below to track progress against targets. Status indicators update automatically. Review weekly with the communications team — a number that isn't tracked isn't managed.</p>
 
   <div class="dash-header">
@@ -2499,7 +2592,7 @@
   </div>
 
   <!-- ── OVERVIEW KPI CARDS ── -->
-  <div class="dash-section-title">Overview — 90-Day Headline KPIs <span>Top-Level</span></div>
+  <div class="dash-section-title" data-en="Overview — 90-Day Headline KPIs <span>Top-Level</span>" data-es="Resumen — KPIs Principales de 90 Días <span>Nivel Superior</span>">Overview — 90-Day Headline KPIs <span>Top-Level</span></div>
 
   <div class="kpi-grid" id="kpi-overview">
     <div class="kpi-card">
@@ -2561,7 +2654,7 @@
   </div>
 
   <!-- ── SOCIAL MEDIA DETAIL ── -->
-  <div class="dash-section-title">Social Media — Phased Targets <span>Update Weekly</span></div>
+  <div class="dash-section-title" data-en="Social Media — Phased Targets <span>Update Weekly</span>" data-es="Redes Sociales — Metas por Fases <span>Actualizar Semanalmente</span>">Social Media — Phased Targets <span>Update Weekly</span></div>
 
   <table class="metric-table">
     <thead>
@@ -2651,7 +2744,7 @@
   </table>
 
   <!-- ── MEDIA PLACEMENTS ── -->
-  <div class="dash-section-title">Media Placements — Booking Tracker <span>Check Off as Confirmed</span></div>
+  <div class="dash-section-title" data-en="Media Placements — Booking Tracker <span>Check Off as Confirmed</span>" data-es="Colocaciones en Medios — Seguimiento de Reservas <span>Marcar al Confirmar</span>">Media Placements — Booking Tracker <span>Check Off as Confirmed</span></div>
 
   <table class="metric-table">
     <thead>
@@ -2752,7 +2845,7 @@
   </table>
 
   <!-- ── INFLUENCE & POLICY ── -->
-  <div class="dash-section-title">Political Influence Metrics <span>Qualitative + Quantitative</span></div>
+  <div class="dash-section-title" data-en="Political Influence Metrics <span>Qualitative + Quantitative</span>" data-es="Métricas de Influencia Política <span>Cualitativas + Cuantitativas</span>">Political Influence Metrics <span>Qualitative + Quantitative</span></div>
 
   <table class="metric-table">
     <thead>
@@ -2886,8 +2979,8 @@
 
 <!-- ═══════════════════ RISKS ═══════════════════ -->
 <div class="section" id="risks">
-  <div class="section-eyebrow">Section 08</div>
-  <div class="section-title">Risks & Mitigation Strategies</div>
+  <div class="section-eyebrow" data-en="Section 08" data-es="Sección 08">Section 08</div>
+  <div class="section-title" data-en="Risks & Mitigation Strategies" data-es="Riesgos y Estrategias de Mitigación">Risks & Mitigation Strategies</div>
   <p class="section-intro">The following risks could derail the media strategy. Each has a defined mitigation protocol that should be reviewed with the communications team weekly.</p>
 
   <div class="risk-row header-row">
@@ -2933,7 +3026,7 @@
 <div class="internal-section" id="org-current">
   <div class="int-section-badge">🔐 Internal · Restricted</div>
   <div class="section-eyebrow">Internal Section 01</div>
-  <div class="section-title">Comando Con Venezuela — Current Organization</div>
+  <div class="section-title" data-en="Comando Con Venezuela — Current Organization" data-es="Comando Con Venezuela — Organización Actual">Comando Con Venezuela — Current Organization</div>
   <p class="section-intro">This is the current operational structure of MCM's private office as of February 2026. It is a skeleton crew that has accomplished extraordinary things on minimal resources — but it is not equipped to execute the 90-day media strategy at the scale required. Every gap identified here represents an urgent hire.</p>
 
   <div class="org-legend">
@@ -3051,8 +3144,8 @@
 <!-- ═══════════════════ URGENT BUILDOUT ═══════════════════ -->
 <div class="internal-section" id="org-needed">
   <div class="int-section-badge">🔐 Internal · Restricted</div>
-  <div class="section-eyebrow">Internal Section 02</div>
-  <div class="section-title">Urgent Organization Buildout</div>
+  <div class="section-eyebrow" data-en="Internal Section 02" data-es="Sección Interna 02">Internal Section 02</div>
+  <div class="section-title" data-en="Urgent Organization Buildout" data-es="Expansión Urgente de la Organización">Urgent Organization Buildout</div>
   <p class="section-intro">To execute the 90-day media strategy, Comando Con Venezuela must grow from a survival operation into a professional political office. These are the hires and external partners needed immediately — week by week. Think of this as going from a local campaign to a presidential operation.</p>
 
   <div class="pillars">
@@ -3203,8 +3296,8 @@
 <!-- ═══════════════════ BUDGET ═══════════════════ -->
 <div class="internal-section" id="budget">
   <div class="int-section-badge">🔐 Internal · Restricted</div>
-  <div class="section-eyebrow">Internal Section 03</div>
-  <div class="section-title">90-Day Budget — Three Scenarios</div>
+  <div class="section-eyebrow" data-en="Internal Section 03" data-es="Sección Interna 03">Internal Section 03</div>
+  <div class="section-title" data-en="90-Day Budget — Three Scenarios" data-es="Presupuesto de 90 Días — Tres Escenarios">90-Day Budget — Three Scenarios</div>
   <p class="section-intro">The honest truth: this campaign can be run at multiple levels of resourcing. What changes is speed, scale, and likelihood of success. Each tier below represents a different level of ambition — and a different fundraising target. All figures are 90-day estimates in USD.</p>
 
   <!-- TIER 1: SHOESTRING -->
@@ -3212,7 +3305,7 @@
     <div class="tier-header tier-bronze">
       <div class="tier-icon">🥉</div>
       <div>
-        <div class="tier-name">Shoestring — Minimum Viable Operation</div>
+        <div class="tier-name" data-en="Shoestring — Minimum Viable Operation" data-es="Mínimo Viable — Operación Ajustada">Shoestring — Minimum Viable Operation</div>
         <div class="tier-desc">Lean team, outsourced production, targeted placements only. Enough to execute the top 30% of the media plan.</div>
       </div>
       <div class="tier-total">~$500K</div>
@@ -3239,7 +3332,7 @@
     <div class="tier-header tier-silver">
       <div class="tier-icon">🥈</div>
       <div>
-        <div class="tier-name">Serious — Full Media Campaign</div>
+        <div class="tier-name" data-en="Serious — Full Media Campaign" data-es="En Serio — Campaña Mediática Completa">Serious — Full Media Campaign</div>
         <div class="tier-desc">Full team, top-tier PR firm, professional production on every appearance. Executes 75% of the media plan at professional standard.</div>
       </div>
       <div class="tier-total">~$1.5M</div>
@@ -3269,7 +3362,7 @@
     <div class="tier-header tier-gold">
       <div class="tier-icon">🥇</div>
       <div>
-        <div class="tier-name">Full Force — Government-in-Waiting Operation</div>
+        <div class="tier-name" data-en="Full Force — Government-in-Waiting Operation" data-es="Fuerza Total — Operación de Gobierno en Espera">Full Force — Government-in-Waiting Operation</div>
         <div class="tier-desc">Complete professional infrastructure. Executes 100% of the media and political strategy. Positions MCM to return to Venezuela as a recognized leader with a functioning office.</div>
       </div>
       <div class="tier-total">$3M–$5M+</div>
@@ -3297,12 +3390,12 @@
 <!-- ═══════════════════ FUNDING ASK ═══════════════════ -->
 <div class="internal-section" id="funding">
   <div class="int-section-badge">🔐 Internal · Restricted</div>
-  <div class="section-eyebrow">Internal Section 04</div>
-  <div class="section-title">Funding Architecture & Donor Strategy</div>
+  <div class="section-eyebrow" data-en="Internal Section 04" data-es="Sección Interna 04">Internal Section 04</div>
+  <div class="section-title" data-en="Funding Architecture & Donor Strategy" data-es="Arquitectura de Financiamiento y Estrategia de Donantes">Funding Architecture & Donor Strategy</div>
   <p class="section-intro">The forces working against María Corina Machado have billions of dollars. The Maduro regime, criminal organizations, and opportunistic international companies transact in the hundreds of millions. Against this, MCM has the most powerful currency in democracy: legitimacy, a Nobel Prize, and the will of 30 million Venezuelans. But legitimacy alone does not pay for a communications director or a PR firm. This section outlines how to raise the resources needed — legally, efficiently, and at the lowest friction possible for donors.</p>
 
   <!-- DONOR TIERS -->
-  <div class="dash-section-title">Donor Tiers — The Ask Structure <span>Name Each Level</span></div>
+  <div class="dash-section-title" data-en="Donor Tiers — The Ask Structure <span>Name Each Level</span>" data-es="Niveles de Donantes — La Estructura de Solicitud <span>Nombrar Cada Nivel</span>">Donor Tiers — The Ask Structure <span>Name Each Level</span></div>
   <div class="donor-tier-grid">
     <div class="donor-tier">
       <div class="donor-amount">$250K+</div>
@@ -3338,7 +3431,7 @@
   </div>
 
   <!-- DONATION CHANNELS -->
-  <div class="dash-section-title">Donation Channels — Maximum Accessibility <span>Lowest Friction for Every Donor Type</span></div>
+  <div class="dash-section-title" data-en="Donation Channels — Maximum Accessibility <span>Lowest Friction for Every Donor Type</span>" data-es="Canales de Donación — Máxima Accesibilidad <span>Mínima Fricción para Cada Tipo de Donante</span>">Donation Channels — Maximum Accessibility <span>Lowest Friction for Every Donor Type</span></div>
 
   <div class="donation-grid">
     <div class="donation-card">
@@ -3411,7 +3504,7 @@
   </div>
 
   <!-- LOW FRICTION PRINCIPLES -->
-  <div class="dash-section-title">Low-Friction Donation Principles <span>Remove Every Barrier Between Intent and Action</span></div>
+  <div class="dash-section-title" data-en="Low-Friction Donation Principles <span>Remove Every Barrier Between Intent and Action</span>" data-es="Principios de Donación Sin Fricción <span>Eliminar Toda Barrera Entre la Intención y la Acción</span>">Low-Friction Donation Principles <span>Remove Every Barrier Between Intent and Action</span></div>
 
   <div class="friction-box">
     <h4>The Cardinal Rule of Fundraising</h4>
@@ -3480,23 +3573,58 @@
 
 <!-- FOOTER -->
 <div class="doc-footer">
-  <div class="footer-brand"><strong>Strategic Communications Plan</strong> · María Corina Machado · Washington D.C.</div>
-  <p>Prepared by Dennis Paul · February 2026 · Confidential · For Internal Planning Purposes Only</p>
+  <div class="footer-brand" data-en="<strong>Strategic Communications Plan</strong> · María Corina Machado · Washington D.C." data-es="<strong>Plan Estratégico de Comunicaciones</strong> · María Corina Machado · Washington D.C."><strong>Strategic Communications Plan</strong> · María Corina Machado · Washington D.C.</div>
+  <p data-en="Prepared by Dennis Paul · February 2026 · Confidential · For Internal Planning Purposes Only" data-es="Preparado por Dennis Paul · Febrero 2026 · Confidencial · Solo para Planificación Interna">Prepared by Dennis Paul · February 2026 · Confidential · For Internal Planning Purposes Only</p>
 </div>
 
 </div><!-- end #app-content -->
 
 <script>
+  // ── LANGUAGE SYSTEM ──
+  let currentLang = sessionStorage.getItem('mcm_lang') || 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    // Update toggle UI
+    const lbl_en = document.getElementById('lbl-en');
+    const lbl_es = document.getElementById('lbl-es');
+    const chk    = document.getElementById('lang-checkbox');
+    const gEn    = document.getElementById('gate-en-btn');
+    const gEs    = document.getElementById('gate-es-btn');
+    if (lbl_en) lbl_en.classList.toggle('active-lang', lang === 'en');
+    if (lbl_es) lbl_es.classList.toggle('active-lang', lang === 'es');
+    if (chk)    chk.checked = (lang === 'es');
+    if (gEn)    gEn.classList.toggle('glb-active', lang === 'en');
+    if (gEs)    gEs.classList.toggle('glb-active', lang === 'es');
+    // Swap all data-en / data-es elements
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt !== null) el.innerHTML = txt;
+    });
+    // Swap placeholders
+    document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+      const ph = el.getAttribute('data-' + lang + '-placeholder');
+      if (ph) el.placeholder = ph;
+    });
+    sessionStorage.setItem('mcm_lang', lang);
+  }
+
+  function setLang(lang) { applyLang(lang); }
+  function toggleLang(chk) { applyLang(chk.checked ? 'es' : 'en'); }
+
   // ── PASSWORD 1: MEDIA PLAN ──
-  async function checkPW() {
+  function checkPW() {
     const input = document.getElementById('pw-input');
-    const err = document.getElementById('pw-error');
-    const val = input.value.trim();
+    const err   = document.getElementById('pw-error');
+    const val   = input.value.trim();
     if (!val) return;
     if (val === 'HastaElFinal2026') {
       document.getElementById('pw-gate').style.display = 'none';
       document.getElementById('app-content').style.display = 'block';
+      const tw = document.getElementById('lang-toggle-wrap');
+      if (tw) tw.style.display = 'flex';
       sessionStorage.setItem('mcm_auth', '1');
+      applyLang(currentLang);
     } else {
       input.classList.remove('shake');
       void input.offsetWidth;
@@ -3507,10 +3635,16 @@
     }
   }
 
+  // Session restore
   if (sessionStorage.getItem('mcm_auth') === '1') {
     document.getElementById('pw-gate').style.display = 'none';
     document.getElementById('app-content').style.display = 'block';
+    const tw = document.getElementById('lang-toggle-wrap');
+    if (tw) tw.style.display = 'flex';
   }
+
+  // Apply saved language on load (works on gate screen too)
+  applyLang(currentLang);
 
   // ── PASSWORD 2: INTERNAL SECTIONS ──
   let pendingInternalSection = null;
