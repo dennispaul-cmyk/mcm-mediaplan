@@ -1515,6 +1515,129 @@
     border-color: var(--gold);
     color: var(--gold);
   }
+
+  /* ─── LANDING PAGE ─── */
+  #landing-page {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 60px;
+    background: linear-gradient(135deg, #06101F 0%, var(--navy) 50%, #0D2147 100%);
+  }
+  #landing-page.active { display: block; }
+  .landing-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .landing-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+  }
+  .landing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--off-white);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .landing-subtitle {
+    font-size: 18px;
+    color: var(--warm-gray);
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .plan-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  @media(max-width:1024px){ .plan-cards{ grid-template-columns:1fr; max-width:600px; } }
+  .plan-card {
+    background: linear-gradient(160deg, rgba(26,50,96,0.6), rgba(18,35,71,0.4));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 48px 40px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 60%);
+    border-radius: 50%;
+    transition: transform 0.4s;
+  }
+  .plan-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+  .plan-card:hover::before { transform: scale(1.2); }
+  .plan-card-inner { position: relative; z-index: 1; }
+  .plan-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .plan-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--off-white);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .plan-card-desc {
+    font-size: 15px;
+    color: var(--warm-gray);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .plan-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .plan-meta-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    padding: 6px 14px;
+    color: var(--gold-light);
+  }
+  .plan-card-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .plan-card-btn::after {
+    content: '→';
+    font-size: 16px;
+    transition: transform 0.3s;
+  }
+  .plan-card:hover .plan-card-btn::after { transform: translateX(4px); }
 </style>
 </head>
 <body>
@@ -1537,8 +1660,8 @@
       <button class="gate-lang-btn" id="gate-es-btn" onclick="setLang('es')">🇻🇪 Español</button>
     </div>
     <div class="pw-kicker" data-en="Confidential · Restricted Access" data-es="Confidencial · Acceso Restringido">Confidential · Restricted Access</div>
-    <div class="pw-logo">María Corina Machado<br><span data-en="Strategic Media Plan" data-es="Plan Estratégico de Medios">Strategic Media Plan</span></div>
-    <div class="pw-subtitle" data-en="Confidential strategic communications plan.<br>From safe houses in Caracas to Washington D.C. —<br>the 90-day plan to complete the mission.<br>Authorized personnel only." data-es="Plan estratégico de comunicaciones confidencial.<br>De casas de seguridad en Caracas a Washington D.C. —<br>el plan de 90 días para completar la misión.<br>Solo personal autorizado.">Confidential strategic communications plan.<br>From safe houses in Caracas to Washington D.C. —<br>the 90-day plan to complete the mission.<br>Authorized personnel only.</div>
+    <div class="pw-logo">Reclaiming Venezuela<br><span data-en="The Strategy for Change" data-es="La Estrategia para el Cambio">The Strategy for Change</span></div>
+    <div class="pw-subtitle" data-en="Confidential strategic plan.<br>Authorized personnel only." data-es="Plan estratégico confidencial.<br>Solo personal autorizado.">Confidential strategic plan.<br>Authorized personnel only.</div>
     <div class="pw-divider"></div>
     <div class="pw-field-wrap">
       <input type="password" id="pw-input" data-en-placeholder="Enter access code" data-es-placeholder="Ingrese el código de acceso" placeholder="Enter access code" autocomplete="off" onkeydown="if(event.key==='Enter') checkPW()">
@@ -1549,27 +1672,54 @@
   </div>
 </div>
 
-<!-- INTERNAL SECTION PASSWORD GATE -->
-<div id="internal-gate">
-  <div class="int-pw-box">
-    <div class="int-banner" data-en="⚠ Restricted · Internal Use Only" data-es="⚠ Restringido · Solo Uso Interno">⚠ Restricted · Internal Use Only</div>
-    <div class="int-title" data-en="Internal Access Required" data-es="Acceso Interno Requerido">Internal Access Required</div>
-    <div class="int-subtitle" data-en="This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only." data-es="Esta sección contiene información organizacional,<br>financiera y de donantes confidencial.<br>Solo para liderazgo senior.">This section contains sensitive organizational,<br>financial, and donor information.<br>Senior leadership access only.</div>
-    <div class="int-divider"></div>
-    <div class="int-field-wrap">
-      <input type="password" id="int-input" data-en-placeholder="Enter internal code" data-es-placeholder="Ingrese el código interno" placeholder="Enter internal code" autocomplete="off" onkeydown="if(event.key==='Enter') checkIntPW()">
-    </div>
-    <button id="int-btn" onclick="checkIntPW()" data-en="Access Internal Documents" data-es="Acceder a Documentos Internos">Access Internal Documents</button>
-    <div id="int-error" data-en="Incorrect code. Access denied." data-es="Código incorrecto. Acceso denegado.">Incorrect code. Access denied.</div>
-    <button id="int-cancel" onclick="cancelIntGate()" data-en="← Return to Media Plan" data-es="← Volver al Plan de Medios">← Return to Media Plan</button>
-  </div>
-</div>
-
 <!-- DOCUMENT CONTENT -->
 <div id="app-content">
 
+<!-- LANDING PAGE -->
+<div id="landing-page" class="active">
+  <div class="landing-header">
+    <div class="landing-kicker" data-en="Strategic Planning Documents · Confidential" data-es="Documentos de Planificación Estratégica · Confidencial">Strategic Planning Documents · Confidential</div>
+    <h1 class="landing-title" data-en="Reclaiming Venezuela:<br>The Strategy for Change" data-es="Recuperando Venezuela:<br>La Estrategia para el Cambio">Reclaiming Venezuela:<br>The Strategy for Change</h1>
+    <p class="landing-subtitle" data-en="From immediate transition to enduring growth. Discover the two complementary plans charting the course to a free and thriving nation." data-es="De la transición inmediata al crecimiento duradero. Descubra los dos planes complementarios que trazan el rumbo hacia una nación libre y próspera.">From immediate transition to enduring growth. Discover the two complementary plans charting the course to a free and thriving nation.</p>
+  </div>
+
+  <div class="plan-cards">
+    <div class="plan-card" onclick="showPlan('media')">
+      <div class="plan-card-inner">
+        <span class="plan-icon">📡</span>
+        <h2 class="plan-card-title" data-en="Media & Influence<br>Strategy" data-es="Estrategia de Medios<br>e Influencia">Media & Influence<br>Strategy</h2>
+        <p class="plan-card-desc" data-en="90-day roadmap for maximum visibility, credibility, and diplomatic leverage in Washington D.C. and globally." data-es="Hoja de ruta de 90 días para máxima visibilidad, credibilidad y apalancamiento diplomático en Washington D.C. y globalmente.">90-day roadmap for maximum visibility, credibility, and diplomatic leverage in Washington D.C. and globally.</p>
+        <div class="plan-card-meta">
+          <span class="plan-meta-pill" data-en="90-Day Plan" data-es="Plan de 90 Días">90-Day Plan</span>
+          <span class="plan-meta-pill" data-en="Media & Communications" data-es="Medios y Comunicaciones">Media & Communications</span>
+          <span class="plan-meta-pill" data-en="9 Sections + 4 Internal" data-es="9 Secciones + 4 Internas">9 Sections + 4 Internal</span>
+        </div>
+        <span class="plan-card-btn" data-en="Open Media Plan" data-es="Abrir Plan de Medios">Open Media Plan</span>
+      </div>
+    </div>
+
+    <div class="plan-card" onclick="showPlan('vision')">
+      <div class="plan-card-inner">
+        <span class="plan-icon">🚀</span>
+        <h2 class="plan-card-title" data-en="Venezuela Vision 2037<br>Energy & Tech Hub" data-es="Venezuela Visión 2037<br>Hub de Energía y Tecnología">Venezuela Vision 2037<br>Energy & Tech Hub</h2>
+        <p class="plan-card-desc" data-en="12-year transformation strategy to build the Energy and Technology Hub of the Americas through rule of law, privatization, and diaspora return." data-es="Estrategia de transformación de 12 años para construir el Hub de Energía y Tecnología de las Américas mediante estado de derecho, privatización y retorno de la diáspora.">12-year transformation strategy to build the Energy and Technology Hub of the Americas through rule of law, privatization, and diaspora return.</p>
+        <div class="plan-card-meta">
+          <span class="plan-meta-pill" data-en="12-Year Vision" data-es="Visión de 12 Años">12-Year Vision</span>
+          <span class="plan-meta-pill" data-en="Economic Transformation" data-es="Transformación Económica">Economic Transformation</span>
+          <span class="plan-meta-pill" data-en="$1.7T Opportunity" data-es="Oportunidad de $1.7T">$1.7T Opportunity</span>
+        </div>
+        <span class="plan-card-btn" data-en="Open Vision 2037" data-es="Abrir Visión 2037">Open Vision 2037</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEDIA PLAN SECTION -->
+<div id="media-plan-section" style="display:none;">
+
 <!-- HEADER -->
 <div class="header">
+  <button onclick="backToLanding()" style="position:absolute; top:20px; left:20px; background:rgba(201,168,76,0.15); border:1px solid var(--gold); border-radius:20px; padding:8px 16px; color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.25)'" onmouseout="this.style.background='rgba(201,168,76,0.15)'" data-en="← Back to Plans" data-es="← Volver a Planes">← Back to Plans</button>
   <div class="header-kicker" data-en="Strategic Communications Brief · Confidential · Prepared by Dennis Paul" data-es="Resumen de Comunicaciones Estratégicas · Confidencial · Preparado por Dennis Paul">Strategic Communications Brief · Confidential · Prepared by Dennis Paul</div>
   <h1 data-en="María Corina Machado:<br><span>U.S. Media & Influence Strategy</span>" data-es="María Corina Machado:<br><span>Estrategia de Medios e Influencia en EE.UU.</span>">María Corina Machado:<br><span>U.S. Media & Influence Strategy</span></h1>
   <p class="header-sub" data-en="A 90-day roadmap for maximum visibility, credibility, and diplomatic leverage — positioned from Washington, D.C. for global impact." data-es="Una hoja de ruta de 90 días para máxima visibilidad, credibilidad y apalancamiento diplomático — posicionada desde Washington, D.C. para impacto global.">A 90-day roadmap for maximum visibility, credibility, and diplomatic leverage — positioned from Washington, D.C. for global impact.</p>
@@ -1592,10 +1742,10 @@
   <button class="nav-tab" onclick="showSection('checklist')" data-en="Action Checklist" data-es="Lista de Acciones">Action Checklist</button>
   <button class="nav-tab" onclick="showSection('dashboard')" data-en="📊 Dashboard" data-es="📊 Panel de Control">📊 Dashboard</button>
   <button class="nav-tab" onclick="showSection('risks')" data-en="Risks & Mitigation" data-es="Riesgos y Mitigación">Risks & Mitigation</button>
-  <button class="nav-tab" style="border-left: 1px solid rgba(155,35,53,0.4); color: #E05A6A;" onclick="requestInternal('org-current')" data-en="🔐 Current Org" data-es="🔐 Org. Actual">🔐 Current Org</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('org-needed')" data-en="🔐 Urgent Buildout" data-es="🔐 Expansión Urgente">🔐 Urgent Buildout</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('budget')" data-en="🔐 Budget" data-es="🔐 Presupuesto">🔐 Budget</button>
-  <button class="nav-tab" style="color: #E05A6A;" onclick="requestInternal('funding')" data-en="🔐 Funding Ask" data-es="🔐 Solicitud de Fondos">🔐 Funding Ask</button>
+  <button class="nav-tab" style="border-left: 1px solid rgba(155,35,53,0.4); color: #E05A6A;" onclick="showInternalSection('org-current')" data-en="Current Org" data-es="Org. Actual">Current Org</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="showInternalSection('org-needed')" data-en="Urgent Buildout" data-es="Expansión Urgente">Urgent Buildout</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="showInternalSection('budget')" data-en="Budget" data-es="Presupuesto">Budget</button>
+  <button class="nav-tab" style="color: #E05A6A;" onclick="showInternalSection('funding')" data-en="Funding Ask" data-es="Solicitud de Fondos">Funding Ask</button>
 </div>
 
 <!-- ═══════════════════ SITUATION ═══════════════════ -->
@@ -3577,6 +3727,672 @@
   <p data-en="Prepared by Dennis Paul · February 2026 · Confidential · For Internal Planning Purposes Only" data-es="Preparado por Dennis Paul · Febrero 2026 · Confidencial · Solo para Planificación Interna">Prepared by Dennis Paul · February 2026 · Confidential · For Internal Planning Purposes Only</p>
 </div>
 
+</div><!-- end #media-plan-section -->
+
+<!-- VISION 2037 SECTION -->
+<div id="vision-section" style="display:none;">
+
+<!-- HEADER -->
+<div class="header">
+  <button onclick="backToLanding()" style="position:absolute; top:20px; left:20px; background:rgba(201,168,76,0.15); border:1px solid var(--gold); border-radius:20px; padding:8px 16px; color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(201,168,76,0.25)'" onmouseout="this.style.background='rgba(201,168,76,0.15)'" data-en="← Back to Plans" data-es="← Volver a Planes">← Back to Plans</button>
+  <div class="header-kicker" data-en="National Transformation Strategy · Confidential · Prepared by Dennis Paul" data-es="Estrategia de Transformación Nacional · Confidencial · Preparado por Dennis Paul">National Transformation Strategy · Confidential · Prepared by Dennis Paul</div>
+  <h1 data-en="Venezuela Vision 2037:<br><span>Energy and Technology Hub of the Americas</span>" data-es="Venezuela Visión 2037:<br><span>Hub de Energía y Tecnología de las Américas</span>">Venezuela Vision 2037:<br><span>Energy and Technology Hub of the Americas</span></h1>
+  <p class="header-sub" data-en="A 12-year strategic roadmap to restore rule of law, execute transparent privatization, and attract the world's best minds to build Latin America's most prosperous nation." data-es="Una hoja de ruta estratégica de 12 años para restaurar el estado de derecho, ejecutar privatización transparente y atraer las mejores mentes del mundo para construir la nación más próspera de América Latina.">A 12-year strategic roadmap to restore rule of law, execute transparent privatization, and attract the world's best minds to build Latin America's most prosperous nation.</p>
+  <div class="header-meta">
+    <div class="meta-pill" data-en="February 2026" data-es="Febrero 2026">February 2026</div>
+    <div class="meta-pill" data-en="Timeline: 2026–2037" data-es="Cronograma: 2026–2037">Timeline: 2026–2037</div>
+    <div class="meta-pill" data-en="$1.7 Trillion Opportunity" data-es="Oportunidad de $1.7 Billones">$1.7 Trillion Opportunity</div>
+    <div class="meta-pill" data-en="4 Strategic Pillars" data-es="4 Pilares Estratégicos">4 Strategic Pillars</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-overview')" data-en="Overview" data-es="Resumen">Overview</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-moment')" data-en="Venezuela's Moment" data-es="El Momento de Venezuela">Venezuela's Moment</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-pillars')" data-en="Four Pillars" data-es="Cuatro Pilares">Four Pillars</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-energy')" data-en="Energy Hub" data-es="Hub de Energía">Energy Hub</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-tech')" data-en="Technology Hub" data-es="Hub de Tecnología">Technology Hub</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-diaspora')" data-en="Diaspora Strategy" data-es="Estrategia de Diáspora">Diaspora Strategy</button>
+  <button class="nav-tab vision-tab" onclick="showVisionSection('v-execution')" data-en="Execution & KPIs" data-es="Ejecución e Indicadores">Execution & KPIs</button>
+</div>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<div class="section vision-section active" id="v-overview">
+  <div class="section-eyebrow" data-en="Executive Summary" data-es="Resumen Ejecutivo">Executive Summary</div>
+  <div class="section-title" data-en="Venezuela Vision 2037" data-es="Venezuela Visión 2037">Venezuela Vision 2037</div>
+  <p class="section-intro" data-en="Venezuela stands at an inflection point. For the first time in a generation, the conditions exist to complete a transition from criminal dictatorship to democratic governance — and to reclaim Venezuela's rightful place as the most prosperous nation in Latin America. This is not a rebuilding project. This is a transformation project." data-es="Venezuela se encuentra en un punto de inflexión. Por primera vez en una generación, existen las condiciones para completar una transición de dictadura criminal a gobernanza democrática — y reclamar el lugar legítimo de Venezuela como la nación más próspera de América Latina. Esto no es un proyecto de reconstrucción. Esto es un proyecto de transformación.">Venezuela stands at an inflection point. For the first time in a generation, the conditions exist to complete a transition from criminal dictatorship to democratic governance — and to reclaim Venezuela's rightful place as the most prosperous nation in Latin America. This is not a rebuilding project. This is a transformation project.</p>
+
+  <div class="message-box">
+    <h3 data-en="The Vision" data-es="La Visión">The Vision</h3>
+    <p data-en="Venezuela Vision 2037 is a 12-year strategic roadmap to leverage our nation's unparalleled natural resources, restore rule of law, and attract the world's best minds — Venezuelan and international — to build the Energy and Technology Hub of the Americas." data-es="Venezuela Visión 2037 es una hoja de ruta estratégica de 12 años para aprovechar los recursos naturales incomparables de nuestra nación, restaurar el estado de derecho y atraer las mejores mentes del mundo — venezolanas e internacionales — para construir el Hub de Energía y Tecnología de las Américas.">Venezuela Vision 2037 is a 12-year strategic roadmap to leverage our nation's unparalleled natural resources, restore rule of law, and attract the world's best minds — Venezuelan and international — to build the Energy and Technology Hub of the Americas.</p>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">$1.7T</div>
+      <h3 data-en="Investment Opportunity" data-es="Oportunidad de Inversión">Investment Opportunity</h3>
+      <p data-en="Foreign direct investment potential over 15 years through transparent privatization and new investment in energy and technology sectors." data-es="Potencial de inversión extranjera directa durante 15 años mediante privatización transparente y nueva inversión en sectores de energía y tecnología.">Foreign direct investment potential over 15 years through transparent privatization and new investment in energy and technology sectors.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">8M</div>
+      <h3 data-en="Diaspora Advantage" data-es="Ventaja de la Diáspora">Diaspora Advantage</h3>
+      <p data-en="Venezuelans abroad — our greatest asset. Doctors, engineers, entrepreneurs, and skilled workers ready to return home and rebuild." data-es="Venezolanos en el exterior — nuestro mayor activo. Médicos, ingenieros, empresarios y trabajadores calificados listos para regresar a casa y reconstruir.">Venezuelans abroad — our greatest asset. Doctors, engineers, entrepreneurs, and skilled workers ready to return home and rebuild.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">303B</div>
+      <h3 data-en="Energy Dominance" data-es="Dominio Energético">Energy Dominance</h3>
+      <p data-en="Barrels of proven oil reserves — the world's largest. Plus the 8th-largest natural gas reserves globally. The foundation of our transformation." data-es="Barriles de reservas probadas de petróleo — las más grandes del mundo. Más las octavas reservas de gas natural más grandes a nivel mundial. La base de nuestra transformación.">Barrels of proven oil reserves — the world's largest. Plus the 8th-largest natural gas reserves globally. The foundation of our transformation.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="By 2037, Venezuela Will Be:" data-es="Para 2037, Venezuela Será:">By 2037, Venezuela Will Be:</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="The Energy Hub of the Americas" data-es="El Hub de Energía de las Américas">The Energy Hub of the Americas</h3>
+      <ul>
+        <li data-en="Producing 4.7 million barrels of oil per day (up from <1M today)" data-es="Produciendo 4.7 millones de barriles de petróleo por día (desde <1M hoy)">Producing 4.7 million barrels of oil per day (up from <1M today)</li>
+        <li data-en="Supplying clean energy across the Western Hemisphere" data-es="Suministrando energía limpia a través del Hemisferio Occidental">Supplying clean energy across the Western Hemisphere</li>
+        <li data-en="Serving as the strategic energy partner to the United States" data-es="Sirviendo como socio estratégico de energía para Estados Unidos">Serving as the strategic energy partner to the United States</li>
+        <li data-en="$800B+ in total energy sector investment" data-es="$800B+ en inversión total del sector energético">$800B+ in total energy sector investment</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="The Technology Hub of the Americas" data-es="El Hub de Tecnología de las Américas">The Technology Hub of the Americas</h3>
+      <ul>
+        <li data-en="Home to 10+ hyperscale datacenters powered by lowest-cost energy" data-es="Sede de más de 10 centros de datos a hiperescala alimentados por energía de menor costo">Home to 10+ hyperscale datacenters powered by lowest-cost energy</li>
+        <li data-en="Thriving AI and software ecosystem serving Latin America" data-es="Próspero ecosistema de IA y software sirviendo a América Latina">Thriving AI and software ecosystem serving Latin America</li>
+        <li data-en="Digitally native government as model for the region" data-es="Gobierno digitalmente nativo como modelo para la región">Digitally native government as model for the region</li>
+        <li data-en="$200B+ in tech sector investment, 500,000+ jobs created" data-es="$200B+ en inversión del sector tecnológico, 500,000+ empleos creados">$200B+ in tech sector investment, 500,000+ jobs created</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="A Magnet for Talent" data-es="Un Imán para el Talento">A Magnet for Talent</h3>
+      <ul>
+        <li data-en="5+ million returning Venezuelans bringing skills, capital, and connections" data-es="Más de 5 millones de venezolanos que regresan con habilidades, capital y conexiones">5+ million returning Venezuelans bringing skills, capital, and connections</li>
+        <li data-en="The greatest reverse brain drain in modern history" data-es="La mayor reversión de fuga de cerebros en la historia moderna">The greatest reverse brain drain in modern history</li>
+        <li data-en="From refugee crisis to builder's movement" data-es="De crisis de refugiados a movimiento de constructores">From refugee crisis to builder's movement</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="A Beacon of Democratic Capitalism" data-es="Un Faro del Capitalismo Democrático">A Beacon of Democratic Capitalism</h3>
+      <ul>
+        <li data-en="Transparent privatization — the opposite of Russia" data-es="Privatización transparente — lo opuesto a Rusia">Transparent privatization — the opposite of Russia</li>
+        <li data-en="Rule of law, property rights, contract enforcement" data-es="Estado de derecho, derechos de propiedad, cumplimiento de contratos">Rule of law, property rights, contract enforcement</li>
+        <li data-en="Top 25 globally on World Justice Project (from 142nd today)" data-es="Top 25 a nivel mundial en el Proyecto de Justicia Mundial (desde el 142° hoy)">Top 25 globally on World Justice Project (from 142nd today)</li>
+        <li data-en="A government that exists to serve citizens — not enrich elites" data-es="Un gobierno que existe para servir a los ciudadanos — no para enriquecer élites">A government that exists to serve citizens — not enrich elites</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="message-box" style="margin-top:40px;">
+    <h3 data-en="The Opportunity" data-es="La Oportunidad">The Opportunity</h3>
+    <blockquote data-en="&quot;Venezuela will be the single biggest economic opportunity for decades to come in this region. We're talking about an opportunity, business opportunity, of more than $1.7 trillion. This is unique.&quot;" data-es="&quot;Venezuela será la oportunidad económica más grande en las próximas décadas en esta región. Estamos hablando de una oportunidad, oportunidad de negocios, de más de $1.7 billones. Esto es único.&quot;">"Venezuela will be the single biggest economic opportunity for decades to come in this region. We're talking about an opportunity, business opportunity, of more than $1.7 trillion. This is unique."</blockquote>
+    <p style="text-align:right; font-style:italic; color:var(--gold-light);" data-en="— María Corina Machado, Fortune Global Forum, October 2025" data-es="— María Corina Machado, Fortune Global Forum, Octubre 2025">— María Corina Machado, Fortune Global Forum, October 2025</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ VENEZUELA'S MOMENT ═══════════════════ -->
+<div class="section vision-section" id="v-moment">
+  <div class="section-eyebrow" data-en="Context" data-es="Contexto">Context</div>
+  <div class="section-title" data-en="Venezuela's Moment" data-es="El Momento de Venezuela">Venezuela's Moment</div>
+  
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="What We Were" data-es="Lo Que Éramos">What We Were</h3>
+      <p data-en="Before the Chávez-Maduro era, Venezuela was the richest and freest country in Latin America. A functioning democracy. A magnet for immigrants from across the region. An oil powerhouse that fueled prosperity at home and influence abroad." data-es="Antes de la era Chávez-Maduro, Venezuela era el país más rico y libre de América Latina. Una democracia funcional. Un imán para inmigrantes de toda la región. Una potencia petrolera que alimentaba la prosperidad en casa y la influencia en el exterior.">Before the Chávez-Maduro era, Venezuela was the richest and freest country in Latin America. A functioning democracy. A magnet for immigrants from across the region. An oil powerhouse that fueled prosperity at home and influence abroad.</p>
+    </div>
+    <div class="sit-card red">
+      <h3 data-en="What We Became" data-es="En Lo Que Nos Convertimos">What We Became</h3>
+      <p data-en="Twenty-seven years of socialist rule destroyed that prosperity:" data-es="Veintisiete años de gobierno socialista destruyeron esa prosperidad:">Twenty-seven years of socialist rule destroyed that prosperity:</p>
+      <ul>
+        <li data-en="80% economic collapse — one of the steepest declines in modern history" data-es="Colapso económico del 80% — una de las caídas más pronunciadas de la historia moderna">80% economic collapse — one of the steepest declines in modern history</li>
+        <li data-en="8 million Venezuelans forced to flee — nearly one-third of our population" data-es="8 millones de venezolanos obligados a huir — casi un tercio de nuestra población">8 million Venezuelans forced to flee — nearly one-third of our population</li>
+        <li data-en="Infrastructure devastated: people burning furniture to cook despite sitting atop the world's largest oil reserves" data-es="Infraestructura devastada: personas quemando muebles para cocinar a pesar de estar sobre las mayores reservas de petróleo del mundo">Infrastructure devastated: people burning furniture to cook despite sitting atop the world's largest oil reserves</li>
+        <li data-en="Rule of law ranked 142nd out of 142 countries globally" data-es="Estado de derecho clasificado 142° de 142 países a nivel mundial">Rule of law ranked 142nd out of 142 countries globally</li>
+        <li data-en="A nation turned into the criminal and terrorist hub of the Americas" data-es="Una nación convertida en el centro criminal y terrorista de las Américas">A nation turned into the criminal and terrorist hub of the Americas</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="message-box">
+    <h3 data-en="What We Will Become" data-es="En Lo Que Nos Convertiremos">What We Will Become</h3>
+    <p data-en="Vision 2037 charts a path to restore — and then surpass — Venezuela's historic prosperity by 2037. This is not wishful thinking. The opportunity is real. The capital is waiting. The talent is ready to return. What has been missing is a government worthy of trust." data-es="Visión 2037 traza un camino para restaurar — y luego superar — la prosperidad histórica de Venezuela para 2037. Esto no es pensamiento desiderativo. La oportunidad es real. El capital está esperando. El talento está listo para regresar. Lo que ha faltado es un gobierno digno de confianza.">Vision 2037 charts a path to restore — and then surpass — Venezuela's historic prosperity by 2037. This is not wishful thinking. The opportunity is real. The capital is waiting. The talent is ready to return. What has been missing is a government worthy of trust.</p>
+  </div>
+
+  <div class="message-box secondary">
+    <h3 data-en="The Transformation Is Not Russia, It's Not Iraq, It's Venezuela" data-es="La Transformación No Es Rusia, No Es Irak, Es Venezuela">The Transformation Is Not Russia, It's Not Iraq, It's Venezuela</h3>
+    <p data-en="Venezuela has a proud democratic history. We were a functioning democracy for decades before Chávez. The institutions were dismantled deliberately — but the democratic culture, memory, and infrastructure still exist. Venezuelans lived under the rule of law for generations. Free markets, property rights, independent courts — these are not foreign concepts. This is restoration, not nation-building from scratch." data-es="Venezuela tiene una orgullosa historia democrática. Fuimos una democracia funcional durante décadas antes de Chávez. Las instituciones fueron desmanteladas deliberadamente — pero la cultura democrática, la memoria y la infraestructura aún existen. Los venezolanos vivieron bajo el estado de derecho durante generaciones. Mercados libres, derechos de propiedad, tribunales independientes — estos no son conceptos extraños. Esto es restauración, no construcción de una nación desde cero.">Venezuela has a proud democratic history. We were a functioning democracy for decades before Chávez. The institutions were dismantled deliberately — but the democratic culture, memory, and infrastructure still exist. Venezuelans lived under the rule of law for generations. Free markets, property rights, independent courts — these are not foreign concepts. This is restoration, not nation-building from scratch.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ FOUR PILLARS ═══════════════════ -->
+<div class="section vision-section" id="v-pillars">
+  <div class="section-eyebrow" data-en="Strategic Framework" data-es="Marco Estratégico">Strategic Framework</div>
+  <div class="section-title" data-en="The Four Pillars of Vision 2037" data-es="Los Cuatro Pilares de Visión 2037">The Four Pillars of Vision 2037</div>
+  <p class="section-intro" data-en="Venezuela Vision 2037 rests on four strategic pillars, each with measurable outcomes and clear timelines." data-es="Venezuela Visión 2037 se basa en cuatro pilares estratégicos, cada uno con resultados medibles y cronogramas claros.">Venezuela Vision 2037 rests on four strategic pillars, each with measurable outcomes and clear timelines.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <h3 data-en="Rule of Law & Democratic Institutions" data-es="Estado de Derecho e Instituciones Democráticas">Rule of Law & Democratic Institutions</h3>
+      <p data-en="Without this, nothing else is possible. Restore independent judiciary, eliminate corruption, establish transparent regulatory frameworks. From 142nd to top 25 globally by 2037." data-es="Sin esto, nada más es posible. Restaurar un poder judicial independiente, eliminar la corrupción, establecer marcos regulatorios transparentes. Del 142° al top 25 mundial para 2037.">Without this, nothing else is possible. Restore independent judiciary, eliminate corruption, establish transparent regulatory frameworks. From 142nd to top 25 globally by 2037.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <h3 data-en="Market-Oriented Privatization" data-es="Privatización Orientada al Mercado">Market-Oriented Privatization</h3>
+      <p data-en="The opposite of Russia. 500+ enterprises privatized transparently. Competitive bidding, international oversight, proceeds to national reconstruction fund. Global advisors retained. $1.7 trillion opportunity." data-es="Lo opuesto a Rusia. Más de 500 empresas privatizadas de manera transparente. Licitación competitiva, supervisión internacional, ingresos al fondo nacional de reconstrucción. Asesores globales contratados. Oportunidad de $1.7 billones.">The opposite of Russia. 500+ enterprises privatized transparently. Competitive bidding, international oversight, proceeds to national reconstruction fund. Global advisors retained. $1.7 trillion opportunity.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <h3 data-en="Energy Hub of the Americas" data-es="Hub de Energía de las Américas">Energy Hub of the Americas</h3>
+      <p data-en="From <1M to 4.7M barrels per day by 2035. LNG export terminals. Regional refining hub. Clean hydroelectric power surplus for export. $800B+ in energy investment." data-es="De <1M a 4.7M barriles por día para 2035. Terminales de exportación de GNL. Centro regional de refinación. Excedente de energía hidroeléctrica limpia para exportación. $800B+ en inversión energética.">From <1M to 4.7M barrels per day by 2035. LNG export terminals. Regional refining hub. Clean hydroelectric power surplus for export. $800B+ in energy investment.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">04</div>
+      <h3 data-en="Technology Hub of the Americas" data-es="Hub de Tecnología de las Américas">Technology Hub of the Americas</h3>
+      <p data-en="10+ hyperscale datacenters powered by cheapest energy in Latin America. AI research labs. Nearshore software development hub. Tech-enabled healthcare. $200B+ in tech investment." data-es="Más de 10 centros de datos a hiperescala alimentados por la energía más barata de América Latina. Laboratorios de investigación de IA. Centro de desarrollo de software nearshore. Atención médica habilitada por tecnología. $200B+ en inversión tecnológica.">10+ hyperscale datacenters powered by cheapest energy in Latin America. AI research labs. Nearshore software development hub. Tech-enabled healthcare. $200B+ in tech investment.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Pillar One: Rule of Law & Democratic Institutions" data-es="Pilar Uno: Estado de Derecho e Instituciones Democráticas">Pillar One: Rule of Law & Democratic Institutions</div>
+
+  <div class="message-box">
+    <h3 data-en="Without This Foundation, Nothing Else Works" data-es="Sin Esta Base, Nada Más Funciona">Without This Foundation, Nothing Else Works</h3>
+    <p data-en="Investors will not bring capital to a country where contracts are not honored, property can be seized arbitrarily, and courts serve politicians instead of justice. The Venezuelan people will not return to a country where speaking out leads to imprisonment. Rule of law is not optional — it is the prerequisite for everything else in Vision 2037." data-es="Los inversionistas no traerán capital a un país donde los contratos no se honran, la propiedad puede ser confiscada arbitrariamente y los tribunales sirven a políticos en lugar de a la justicia. El pueblo venezolano no regresará a un país donde hablar lleva al encarcelamiento. El estado de derecho no es opcional — es el prerrequisito para todo lo demás en Visión 2037.">Investors will not bring capital to a country where contracts are not honored, property can be seized arbitrarily, and courts serve politicians instead of justice. The Venezuelan people will not return to a country where speaking out leads to imprisonment. Rule of law is not optional — it is the prerequisite for everything else in Vision 2037.</p>
+  </div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="Year 1 (2026–2027)" data-es="Año 1 (2026–2027)">Year 1 (2026–2027)</h3>
+      <ul>
+        <li data-en="Restore independent judiciary" data-es="Restaurar poder judicial independiente">Restore independent judiciary</li>
+        <li data-en="Eliminate corruption in law enforcement" data-es="Eliminar corrupción en fuerzas del orden">Eliminate corruption in law enforcement</li>
+        <li data-en="Establish transparent regulatory frameworks" data-es="Establecer marcos regulatorios transparentes">Establish transparent regulatory frameworks</li>
+        <li data-en="Constitutional reform to strengthen separation of powers" data-es="Reforma constitucional para fortalecer la separación de poderes">Constitutional reform to strengthen separation of powers</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Years 2–5 (2027–2030)" data-es="Años 2–5 (2027–2030)">Years 2–5 (2027–2030)</h3>
+      <ul>
+        <li data-en="Property rights codified and enforced" data-es="Derechos de propiedad codificados y aplicados">Property rights codified and enforced</li>
+        <li data-en="Contracts honored, international arbitration accepted" data-es="Contratos honrados, arbitraje internacional aceptado">Contracts honored, international arbitration accepted</li>
+        <li data-en="Venezuela becomes investment-grade" data-es="Venezuela obtiene grado de inversión">Venezuela becomes investment-grade</li>
+        <li data-en="Land title regularization for millions of Venezuelans" data-es="Regularización de títulos de propiedad para millones de venezolanos">Land title regularization for millions of Venezuelans</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Years 6–12 (2030–2037)" data-es="Años 6–12 (2030–2037)">Years 6–12 (2030–2037)</h3>
+      <ul>
+        <li data-en="Ranked in top 25 globally on World Justice Project Rule of Law Index (from 142nd today)" data-es="Clasificado en el top 25 mundial en el Índice de Estado de Derecho del Proyecto de Justicia Mundial (desde el 142° hoy)">Ranked in top 25 globally on World Justice Project Rule of Law Index (from 142nd today)</li>
+        <li data-en="Anti-corruption agency with prosecutorial independence (Singapore CPIB model)" data-es="Agencia anticorrupción con independencia fiscal (modelo CPIB de Singapur)">Anti-corruption agency with prosecutorial independence (Singapore CPIB model)</li>
+        <li data-en="Judicial appointments via merit-based, transparent process" data-es="Nombramientos judiciales mediante proceso transparente basado en mérito">Judicial appointments via merit-based, transparent process</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Pillar Two: Market-Oriented Privatization" data-es="Pilar Dos: Privatización Orientada al Mercado">Pillar Two: Market-Oriented Privatization</div>
+
+  <div class="message-box" style="border-left-color:var(--crimson);">
+    <h3 data-en="The Opposite of Russia" data-es="Lo Opuesto a Rusia">The Opposite of Russia</h3>
+    <p data-en="When the Soviet Union collapsed, state assets were transferred to politically connected insiders, creating oligarchs who prioritized personal wealth over the public good. Venezuela will not make this mistake. Every privatization will be transparent, competitive, and designed to maximize public benefit — not enrich political elites." data-es="Cuando la Unión Soviética colapsó, los activos estatales fueron transferidos a personas con conexiones políticas, creando oligarcas que priorizaron la riqueza personal sobre el bien público. Venezuela no cometerá este error. Cada privatización será transparente, competitiva y diseñada para maximizar el beneficio público — no enriquecer élites políticas.">When the Soviet Union collapsed, state assets were transferred to politically connected insiders, creating oligarchs who prioritized personal wealth over the public good. Venezuela will not make this mistake. Every privatization will be transparent, competitive, and designed to maximize public benefit — not enrich political elites.</p>
+  </div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="The Opportunity" data-es="La Oportunidad">The Opportunity</h3>
+      <p data-en="Venezuela has 500+ state-owned enterprises seized or destroyed under Chávez and Maduro. The infrastructure still exists. These enterprises span oil services, petrochemicals, utilities, telecommunications, and manufacturing." data-es="Venezuela tiene más de 500 empresas estatales confiscadas o destruidas bajo Chávez y Maduro. La infraestructura aún existe. Estas empresas abarcan servicios petroleros, petroquímicos, servicios públicos, telecomunicaciones y manufactura.">Venezuela has 500+ state-owned enterprises seized or destroyed under Chávez and Maduro. The infrastructure still exists. These enterprises span oil services, petrochemicals, utilities, telecommunications, and manufacturing.</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Guiding Principles" data-es="Principios Rectores">Guiding Principles</h3>
+      <ul>
+        <li data-en="Transparency first: Every privatization publicly tendered with international oversight" data-es="Transparencia primero: Cada privatización licitada públicamente con supervisión internacional">Transparency first: Every privatization publicly tendered with international oversight</li>
+        <li data-en="Competitive bidding: Open to Venezuelan and foreign investors" data-es="Licitación competitiva: Abierta a inversionistas venezolanos y extranjeros">Competitive bidding: Open to Venezuelan and foreign investors</li>
+        <li data-en="Public benefit maximized: Proceeds to national reconstruction fund" data-es="Beneficio público maximizado: Ingresos al fondo nacional de reconstrucción">Public benefit maximized: Proceeds to national reconstruction fund</li>
+        <li data-en="No oligarchs: Anti-monopoly provisions prevent asset concentration" data-es="Sin oligarcas: Provisiones antimonopolio previenen concentración de activos">No oligarchs: Anti-monopoly provisions prevent asset concentration</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Phase 1 — Months 1–12" data-es="Fase 1 — Meses 1–12">Phase 1 — Months 1–12</div>
+      <div class="tl-title" data-en="Build Trust Through Small-Scale Success" data-es="Construir Confianza a Través del Éxito a Pequeña Escala">Build Trust Through Small-Scale Success</div>
+      <ul class="tl-actions">
+        <li data-en="Privatize 50 small-to-mid enterprises to demonstrate process integrity" data-es="Privatizar 50 empresas pequeñas a medianas para demostrar integridad del proceso">Privatize 50 small-to-mid enterprises to demonstrate process integrity</li>
+        <li data-en="Build investor confidence with transparent execution" data-es="Construir confianza de inversionistas con ejecución transparente">Build investor confidence with transparent execution</li>
+        <li data-en="Retain global advisors: Goldman Sachs, Morgan Stanley, Sullivan & Cromwell, McKinsey" data-es="Contratar asesores globales: Goldman Sachs, Morgan Stanley, Sullivan & Cromwell, McKinsey">Retain global advisors: Goldman Sachs, Morgan Stanley, Sullivan & Cromwell, McKinsey</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Phase 2 — Years 2–3" data-es="Fase 2 — Años 2–3">Phase 2 — Years 2–3</div>
+      <div class="tl-title" data-en="Scale to Major Industries" data-es="Escalar a Industrias Principales">Scale to Major Industries</div>
+      <ul class="tl-actions">
+        <li data-en="Privatize oil services, petrochemical plants, utilities, telecommunications" data-es="Privatizar servicios petroleros, plantas petroquímicas, servicios públicos, telecomunicaciones">Privatize oil services, petrochemical plants, utilities, telecommunications</li>
+        <li data-en="Employee ownership prioritized: Workers given first right of purchase with financing" data-es="Propiedad de empleados priorizada: Trabajadores reciben primer derecho de compra con financiamiento">Employee ownership prioritized: Workers given first right of purchase with financing</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Phase 3 — Years 4–7" data-es="Fase 3 — Años 4–7">Phase 3 — Years 4–7</div>
+      <div class="tl-title" data-en="PDVSA Restructuring" data-es="Reestructuración de PDVSA">PDVSA Restructuring</div>
+      <ul class="tl-actions">
+        <li data-en="Transparent, phased privatization of Venezuela's national oil company" data-es="Privatización transparente y gradual de la compañía petrolera nacional de Venezuela">Transparent, phased privatization of Venezuela's national oil company</li>
+        <li data-en="Worker and citizen share ownership" data-es="Propiedad de acciones para trabajadores y ciudadanos">Worker and citizen share ownership</li>
+        <li data-en="International oil majors invited as partners with production-sharing agreements" data-es="Grandes petroleras internacionales invitadas como socios con acuerdos de participación en la producción">International oil majors invited as partners with production-sharing agreements</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ ENERGY HUB ═══════════════════ -->
+<div class="section vision-section" id="v-energy">
+  <div class="section-eyebrow" data-en="Pillar Three" data-es="Pilar Tres">Pillar Three</div>
+  <div class="section-title" data-en="Energy Hub of the Americas" data-es="Hub de Energía de las Américas">Energy Hub of the Americas</div>
+  
+  <div class="message-box">
+    <h3 data-en="Venezuela's Energy Advantage" data-es="La Ventaja Energética de Venezuela">Venezuela's Energy Advantage</h3>
+    <p data-en="Venezuela possesses 303 billion barrels of proven oil reserves — the largest in the world. We have the 8th-largest natural gas reserves globally. We have strategic location on the Caribbean with deep-water ports and pipeline access to the hemisphere. But today we produce less than 1 million barrels per day. Venezuelans burn furniture to cook. This is a catastrophic failure of governance — not geology." data-es="Venezuela posee 303 mil millones de barriles de reservas probadas de petróleo — las más grandes del mundo. Tenemos las octavas reservas de gas natural más grandes a nivel mundial. Tenemos una ubicación estratégica en el Caribe con puertos de aguas profundas y acceso por oleoductos al hemisferio. Pero hoy producimos menos de 1 millón de barriles por día. Los venezolanos queman muebles para cocinar. Esto es un fracaso catastrófico de gobernanza — no de geología.">Venezuela possesses 303 billion barrels of proven oil reserves — the largest in the world. We have the 8th-largest natural gas reserves globally. We have strategic location on the Caribbean with deep-water ports and pipeline access to the hemisphere. But today we produce less than 1 million barrels per day. Venezuelans burn furniture to cook. This is a catastrophic failure of governance — not geology.</p>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;" data-en="Oil & Gas Sector Transformation" data-es="Transformación del Sector de Petróleo y Gas">Oil & Gas Sector Transformation</div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Immediate Actions — Months 1–6" data-es="Acciones Inmediatas — Meses 1–6">Immediate Actions — Months 1–6</div>
+      <div class="tl-title" data-en="Stop the Bleeding, Restart Production" data-es="Detener la Hemorragia, Reiniciar la Producción">Stop the Bleeding, Restart Production</div>
+      <ul class="tl-actions">
+        <li data-en="Eliminate PDVSA corruption and political patronage" data-es="Eliminar corrupción de PDVSA y clientelismo político">Eliminate PDVSA corruption and political patronage</li>
+        <li data-en="Restore independent technical management" data-es="Restaurar gestión técnica independiente">Restore independent technical management</li>
+        <li data-en="Invite major international oil companies back (ExxonMobil, Chevron, Shell, BP, TotalEnergies) under transparent production-sharing agreements" data-es="Invitar de regreso a las principales compañías petroleras internacionales (ExxonMobil, Chevron, Shell, BP, TotalEnergies) bajo acuerdos transparentes de participación en la producción">Invite major international oil companies back (ExxonMobil, Chevron, Shell, BP, TotalEnergies) under transparent production-sharing agreements</li>
+        <li data-en="Fast-track infrastructure repairs for immediate production increases" data-es="Vía rápida para reparaciones de infraestructura para aumentos inmediatos de producción">Fast-track infrastructure repairs for immediate production increases</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Medium-Term — Years 1–5" data-es="Mediano Plazo — Años 1–5">Medium-Term — Years 1–5</div>
+      <div class="tl-title" data-en="Scale Production, Modernize Infrastructure" data-es="Escalar Producción, Modernizar Infraestructura">Scale Production, Modernize Infrastructure</div>
+      <ul class="tl-actions">
+        <li data-en="Increase production from <1M bpd to 2.5M bpd by 2030" data-es="Aumentar producción de <1M bpd a 2.5M bpd para 2030">Increase production from <1M bpd to 2.5M bpd by 2030</li>
+        <li data-en="Modernize refineries to reduce dependence on imported gasoline" data-es="Modernizar refinerías para reducir dependencia de gasolina importada">Modernize refineries to reduce dependence on imported gasoline</li>
+        <li data-en="Build new natural gas processing facilities for domestic use and LNG export" data-es="Construir nuevas instalaciones de procesamiento de gas natural para uso doméstico y exportación de GNL">Build new natural gas processing facilities for domestic use and LNG export</li>
+        <li data-en="Establish Venezuela as the primary energy security partner to the United States" data-es="Establecer a Venezuela como socio principal de seguridad energética para Estados Unidos">Establish Venezuela as the primary energy security partner to the United States</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Long-Term — 2030–2037" data-es="Largo Plazo — 2030–2037">Long-Term — 2030–2037</div>
+      <div class="tl-title" data-en="Global Energy Leader" data-es="Líder Energético Global">Global Energy Leader</div>
+      <ul class="tl-actions">
+        <li data-en="Reach 4.7M bpd oil production — among the world's top producers" data-es="Alcanzar producción de 4.7M bpd de petróleo — entre los principales productores del mundo">Reach 4.7M bpd oil production — among the world's top producers</li>
+        <li data-en="Position Venezuela as the #1 energy supplier to the United States and a top-3 supplier globally" data-es="Posicionar a Venezuela como proveedor de energía #1 para Estados Unidos y proveedor top 3 a nivel mundial">Position Venezuela as the #1 energy supplier to the United States and a top-3 supplier globally</li>
+        <li data-en="Build regional energy infrastructure: pipelines to Brazil, Colombia; LNG export terminals for Europe and Asia" data-es="Construir infraestructura energética regional: oleoductos a Brasil, Colombia; terminales de exportación de GNL para Europa y Asia">Build regional energy infrastructure: pipelines to Brazil, Colombia; LNG export terminals for Europe and Asia</li>
+        <li data-en="Invest oil revenues into sovereign wealth fund (Norwegian model) for long-term fiscal stability" data-es="Invertir ingresos petroleros en fondo soberano de riqueza (modelo noruego) para estabilidad fiscal a largo plazo">Invest oil revenues into sovereign wealth fund (Norwegian model) for long-term fiscal stability</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Electricity & Renewable Energy" data-es="Electricidad y Energía Renovable">Electricity & Renewable Energy</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="Hydroelectric Dominance" data-es="Dominio Hidroeléctrico">Hydroelectric Dominance</h3>
+      <ul>
+        <li data-en="Restore and expand Guri Dam and national hydroelectric system" data-es="Restaurar y expandir la Represa de Guri y el sistema hidroeléctrico nacional">Restore and expand Guri Dam and national hydroelectric system</li>
+        <li data-en="Clean, renewable baseload power for industry and households" data-es="Energía de carga base limpia y renovable para industria y hogares">Clean, renewable baseload power for industry and households</li>
+        <li data-en="Universal electricity access by 2030; eliminate chronic blackouts" data-es="Acceso universal a electricidad para 2030; eliminar apagones crónicos">Universal electricity access by 2030; eliminate chronic blackouts</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Solar Potential" data-es="Potencial Solar">Solar Potential</h3>
+      <ul>
+        <li data-en="Invest in utility-scale solar in the western plains" data-es="Invertir en energía solar a escala de servicios públicos en los llanos occidentales">Invest in utility-scale solar in the western plains</li>
+        <li data-en="Some of the best solar irradiance in Latin America" data-es="Algunas de las mejores irradiancias solares de América Latina">Some of the best solar irradiance in Latin America</li>
+        <li data-en="Energy surplus for export to Caribbean and Central America" data-es="Excedente de energía para exportación al Caribe y Centroamérica">Energy surplus for export to Caribbean and Central America</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Energy Services & Infrastructure" data-es="Servicios e Infraestructura Energética">Energy Services & Infrastructure</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="Oilfield Services Hub" data-es="Centro de Servicios de Campo Petrolero">Oilfield Services Hub</h3>
+      <p data-en="Attract Schlumberger, Halliburton, Baker Hughes to establish regional headquarters in Maracaibo — serving Venezuela, Colombia, Brazil, Guyana" data-es="Atraer a Schlumberger, Halliburton, Baker Hughes para establecer sedes regionales en Maracaibo — sirviendo a Venezuela, Colombia, Brasil, Guyana">Attract Schlumberger, Halliburton, Baker Hughes to establish regional headquarters in Maracaibo — serving Venezuela, Colombia, Brazil, Guyana</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Petrochemical Industry Revival" data-es="Reactivación de la Industria Petroquímica">Petrochemical Industry Revival</h3>
+      <p data-en="Restore fertilizer, plastics, and chemical production for domestic use and export" data-es="Restaurar producción de fertilizantes, plásticos y productos químicos para uso doméstico y exportación">Restore fertilizer, plastics, and chemical production for domestic use and export</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="LNG Export Terminals" data-es="Terminales de Exportación de GNL">LNG Export Terminals</h3>
+      <p data-en="Build at least two world-class LNG facilities on the Caribbean coast to supply Europe, reducing dependence on Russian gas" data-es="Construir al menos dos instalaciones de GNL de clase mundial en la costa del Caribe para abastecer a Europa, reduciendo dependencia del gas ruso">Build at least two world-class LNG facilities on the Caribbean coast to supply Europe, reducing dependence on Russian gas</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Regional Refining Hub" data-es="Centro Regional de Refinación">Regional Refining Hub</h3>
+      <p data-en="Position Venezuela as the refinery for the Caribbean and northern South America — refined products export at higher margins than crude" data-es="Posicionar a Venezuela como refinería para el Caribe y el norte de Sudamérica — exportación de productos refinados con márgenes más altos que el crudo">Position Venezuela as the refinery for the Caribbean and northern South America — refined products export at higher margins than crude</p>
+    </div>
+  </div>
+
+  <div class="message-box" style="margin-top:40px; border-left-color:var(--gold);">
+    <h3 data-en="Energy Sector Target by 2037" data-es="Objetivo del Sector Energético para 2037">Energy Sector Target by 2037</h3>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">$800B+</div>
+        <p data-en="Total energy sector investment" data-es="Inversión total del sector energético">Total energy sector investment</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">300K+</div>
+        <p data-en="Direct energy sector jobs" data-es="Empleos directos del sector energético">Direct energy sector jobs</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">4.7M</div>
+        <p data-en="Barrels per day production" data-es="Barriles por día de producción">Barrels per day production</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TECHNOLOGY HUB ═══════════════════ -->
+<div class="section vision-section" id="v-tech">
+  <div class="section-eyebrow" data-en="Pillar Four" data-es="Pilar Cuatro">Pillar Four</div>
+  <div class="section-title" data-en="Technology Hub of the Americas" data-es="Hub de Tecnología de las Américas">Technology Hub of the Americas</div>
+
+  <div class="message-box">
+    <h3 data-en="Venezuela's Technology Advantage" data-es="La Ventaja Tecnológica de Venezuela">Venezuela's Technology Advantage</h3>
+    <p data-en="Venezuela's energy advantage creates a unique opportunity: the lowest electricity costs in Latin America can power the most energy-intensive technology of the 21st century. Datacenters require massive, reliable, cheap power — exactly what Venezuela can provide at scale. Add proximity to the U.S. East Coast, a cooler highlands climate, and political stability post-transition, and Venezuela becomes the most attractive datacenter location in the Western Hemisphere." data-es="La ventaja energética de Venezuela crea una oportunidad única: los costos de electricidad más bajos de América Latina pueden alimentar la tecnología más intensiva en energía del siglo XXI. Los centros de datos requieren energía masiva, confiable y barata — exactamente lo que Venezuela puede proporcionar a escala. Agregue proximidad a la costa este de EE.UU., un clima más fresco en las tierras altas y estabilidad política post-transición, y Venezuela se convierte en la ubicación de centro de datos más atractiva del Hemisferio Occidental.">Venezuela's energy advantage creates a unique opportunity: the lowest electricity costs in Latin America can power the most energy-intensive technology of the 21st century. Datacenters require massive, reliable, cheap power — exactly what Venezuela can provide at scale. Add proximity to the U.S. East Coast, a cooler highlands climate, and political stability post-transition, and Venezuela becomes the most attractive datacenter location in the Western Hemisphere.</p>
+  </div>
+
+  <div class="section-title" style="margin-top:40px;" data-en="Datacenter & Cloud Infrastructure" data-es="Centros de Datos e Infraestructura en la Nube">Datacenter & Cloud Infrastructure</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="The Opportunity" data-es="La Oportunidad">The Opportunity</h3>
+      <ul>
+        <li data-en="Proximity to U.S. East Coast — closer than São Paulo or Mexico City with low latency" data-es="Proximidad a la costa este de EE.UU. — más cerca que São Paulo o Ciudad de México con baja latencia">Proximity to U.S. East Coast — closer than São Paulo or Mexico City with low latency</li>
+        <li data-en="Cooler highlands climate reduces cooling costs vs. equatorial competitors" data-es="Clima más fresco en las tierras altas reduce costos de enfriamiento vs. competidores ecuatoriales">Cooler highlands climate reduces cooling costs vs. equatorial competitors</li>
+        <li data-en="Political stability post-transition makes Venezuela attractive vs. autocratic alternatives" data-es="Estabilidad política post-transición hace a Venezuela atractiva vs. alternativas autocráticas">Political stability post-transition makes Venezuela attractive vs. autocratic alternatives</li>
+        <li data-en="Massive, reliable, cheap power — the #1 requirement for hyperscale datacenters" data-es="Energía masiva, confiable y barata — el requisito #1 para centros de datos a hiperescala">Massive, reliable, cheap power — the #1 requirement for hyperscale datacenters</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Execution Strategy" data-es="Estrategia de Ejecución">Execution Strategy</h3>
+      <ul>
+        <li data-en="Special Economic Zones for Technology: Establish 3–5 datacenter parks in Caracas, Maracaibo, Valencia" data-es="Zonas Económicas Especiales para Tecnología: Establecer 3–5 parques de centros de datos en Caracas, Maracaibo, Valencia">Special Economic Zones for Technology: Establish 3–5 datacenter parks in Caracas, Maracaibo, Valencia</li>
+        <li data-en="Tax incentives: 10-year corporate tax holiday for qualifying datacenter investments >$500M" data-es="Incentivos fiscales: Exención fiscal corporativa de 10 años para inversiones de centros de datos calificados >$500M">Tax incentives: 10-year corporate tax holiday for qualifying datacenter investments >$500M</li>
+        <li data-en="Streamlined permitting: 90-day max from application to groundbreaking" data-es="Permisos simplificados: Máximo 90 días desde solicitud hasta inicio de construcción">Streamlined permitting: 90-day max from application to groundbreaking</li>
+        <li data-en="Fiber optic backbone: Connect Venezuela to submarine cables linking U.S., Caribbean, South America" data-es="Red troncal de fibra óptica: Conectar Venezuela a cables submarinos que unen EE.UU., Caribe, Sudamérica">Fiber optic backbone: Connect Venezuela to submarine cables linking U.S., Caribbean, South America</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="message-box secondary">
+    <h3 data-en="Target Anchors" data-es="Anclas Objetivo">Target Anchors</h3>
+    <p data-en="Google, Amazon (AWS), Microsoft (Azure), Oracle, Meta — pitch Venezuela as the energy-efficient alternative to building in power-constrained regions. Target: 10+ hyperscale datacenters operational by 2035, positioning Venezuela as the cloud infrastructure hub for Latin America." data-es="Google, Amazon (AWS), Microsoft (Azure), Oracle, Meta — presentar a Venezuela como la alternativa energéticamente eficiente para construir en regiones con restricciones de energía. Objetivo: Más de 10 centros de datos a hiperescala operativos para 2035, posicionando a Venezuela como el centro de infraestructura en la nube para América Latina.">Google, Amazon (AWS), Microsoft (Azure), Oracle, Meta — pitch Venezuela as the energy-efficient alternative to building in power-constrained regions. Target: 10+ hyperscale datacenters operational by 2035, positioning Venezuela as the cloud infrastructure hub for Latin America.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Artificial Intelligence & Machine Learning" data-es="Inteligencia Artificial y Aprendizaje Automático">Artificial Intelligence & Machine Learning</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="AI Research Labs" data-es="Laboratorios de Investigación de IA">AI Research Labs</h3>
+      <p data-en="Partner with Stanford, MIT, Carnegie Mellon to establish AI research centers in Caracas. Cheap energy = cheap compute = attract AI model training to Venezuela." data-es="Asociarse con Stanford, MIT, Carnegie Mellon para establecer centros de investigación de IA en Caracas. Energía barata = computación barata = atraer entrenamiento de modelos de IA a Venezuela.">Partner with Stanford, MIT, Carnegie Mellon to establish AI research centers in Caracas. Cheap energy = cheap compute = attract AI model training to Venezuela.</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Talent Pipeline" data-es="Línea de Talento">Talent Pipeline</h3>
+      <p data-en="Venezuelan diaspora includes thousands of ML engineers and data scientists at Google, Meta, OpenAI, Anthropic — recruit them home with competitive salaries, equity, and the chance to build Venezuela's AI future." data-es="La diáspora venezolana incluye miles de ingenieros de ML y científicos de datos en Google, Meta, OpenAI, Anthropic — reclutarlos de vuelta a casa con salarios competitivos, participación accionaria y la oportunidad de construir el futuro de IA de Venezuela.">Venezuelan diaspora includes thousands of ML engineers and data scientists at Google, Meta, OpenAI, Anthropic — recruit them home with competitive salaries, equity, and the chance to build Venezuela's AI future.</p>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="AI-First Government" data-es="Gobierno con IA Primero">AI-First Government</h3>
+      <p data-en="Deploy AI across government services: document processing, permitting, tax collection. Demonstrate efficiency and become Latin America's digital government leader." data-es="Desplegar IA en servicios gubernamentales: procesamiento de documentos, permisos, recaudación de impuestos. Demostrar eficiencia y convertirse en líder de gobierno digital de América Latina.">Deploy AI across government services: document processing, permitting, tax collection. Demonstrate efficiency and become Latin America's digital government leader.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Enterprise Software & Consumer Internet" data-es="Software Empresarial e Internet del Consumidor">Enterprise Software & Consumer Internet</div>
+
+  <div class="message-box">
+    <h3 data-en="Venezuela Has What Silicon Valley Needs" data-es="Venezuela Tiene Lo Que Silicon Valley Necesita">Venezuela Has What Silicon Valley Needs</h3>
+    <ul style="list-style:none; padding:0;">
+      <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" data-en="✦ Bilingual talent: Spanish-English fluency = serve both U.S. and Latin American markets" data-es="✦ Talento bilingüe: Fluidez español-inglés = servir tanto mercados de EE.UU. como latinoamericanos">✦ Bilingual talent: Spanish-English fluency = serve both U.S. and Latin American markets</li>
+      <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" data-en="✦ Cost arbitrage: Salaries 50–70% lower than San Francisco while maintaining quality" data-es="✦ Arbitraje de costos: Salarios 50–70% más bajos que San Francisco manteniendo calidad">✦ Cost arbitrage: Salaries 50–70% lower than San Francisco while maintaining quality</li>
+      <li style="padding:8px 0;" data-en="✦ Time zone alignment: Caracas is only 1 hour ahead of New York — perfect for U.S. companies" data-es="✦ Alineación de zona horaria: Caracas está solo 1 hora adelante de Nueva York — perfecto para empresas de EE.UU.">✦ Time zone alignment: Caracas is only 1 hour ahead of New York — perfect for U.S. companies</li>
+    </ul>
+  </div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="Target Sectors" data-es="Sectores Objetivo">Target Sectors</h3>
+      <ul>
+        <li data-en="Enterprise SaaS: CRM, ERP, fintech infrastructure serving Latin America" data-es="SaaS empresarial: CRM, ERP, infraestructura fintech sirviendo a América Latina">Enterprise SaaS: CRM, ERP, fintech infrastructure serving Latin America</li>
+        <li data-en="Consumer internet: E-commerce, fintech, edtech, healthtech for Spanish markets" data-es="Internet del consumidor: Comercio electrónico, fintech, edtech, healthtech para mercados hispanohablantes">Consumer internet: E-commerce, fintech, edtech, healthtech for Spanish markets</li>
+        <li data-en="Nearshore development: Establish Venezuela as #1 nearshore destination for U.S. tech" data-es="Desarrollo nearshore: Establecer a Venezuela como destino nearshore #1 para tecnología de EE.UU.">Nearshore development: Establish Venezuela as #1 nearshore destination for U.S. tech</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Key Initiatives" data-es="Iniciativas Clave">Key Initiatives</h3>
+      <ul>
+        <li data-en="Technology Free Zones: Zero corporate tax for software companies" data-es="Zonas Francas Tecnológicas: Cero impuestos corporativos para empresas de software">Technology Free Zones: Zero corporate tax for software companies</li>
+        <li data-en="Startup accelerators: Partner with Y Combinator, Techstars, 500 Startups" data-es="Aceleradoras de startups: Asociarse con Y Combinator, Techstars, 500 Startups">Startup accelerators: Partner with Y Combinator, Techstars, 500 Startups</li>
+        <li data-en="VC fund: $500M government-backed fund to co-invest with international VCs" data-es="Fondo de VC: Fondo respaldado por gobierno de $500M para coinvertir con VCs internacionales">VC fund: $500M government-backed fund to co-invest with international VCs</li>
+        <li data-en="Coding bootcamps: Produce 50,000 new developers by 2030" data-es="Bootcamps de programación: Producir 50,000 nuevos desarrolladores para 2030">Coding bootcamps: Produce 50,000 new developers by 2030</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Tech-Enabled Healthcare" data-es="Atención Médica Habilitada por Tecnología">Tech-Enabled Healthcare</div>
+
+  <div class="message-box secondary">
+    <p data-en="Venezuela's healthcare system collapsed under socialism. Technology can leapfrog the rebuild. National telehealth platform connecting remote patients to Caracas doctors. Universal electronic health records (Estonian model) — every Venezuelan owns their health data. Deploy diagnostic AI to rural clinics where specialist doctors are scarce. Leverage low energy costs to attract pharmaceutical manufacturing and biotech R&D." data-es="El sistema de salud de Venezuela colapsó bajo el socialismo. La tecnología puede dar un salto en la reconstrucción. Plataforma nacional de telesalud conectando pacientes remotos con médicos en Caracas. Registros de salud electrónicos universales (modelo estonio) — cada venezolano es dueño de sus datos de salud. Desplegar IA diagnóstica en clínicas rurales donde escasean médicos especialistas. Aprovechar bajos costos de energía para atraer manufactura farmacéutica e I+D biotecnológica.">Venezuela's healthcare system collapsed under socialism. Technology can leapfrog the rebuild. National telehealth platform connecting remote patients to Caracas doctors. Universal electronic health records (Estonian model) — every Venezuelan owns their health data. Deploy diagnostic AI to rural clinics where specialist doctors are scarce. Leverage low energy costs to attract pharmaceutical manufacturing and biotech R&D.</p>
+  </div>
+
+  <div class="message-box" style="margin-top:40px; border-left-color:var(--gold);">
+    <h3 data-en="Technology Sector Target by 2037" data-es="Objetivo del Sector Tecnológico para 2037">Technology Sector Target by 2037</h3>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">$200B+</div>
+        <p data-en="Total tech sector investment" data-es="Inversión total del sector tecnológico">Total tech sector investment</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">500K+</div>
+        <p data-en="Tech sector jobs created" data-es="Empleos del sector tecnológico creados">Tech sector jobs created</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">Top 10</div>
+        <p data-en="Global tech hub ranking" data-es="Ranking de hub tecnológico global">Global tech hub ranking</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DIASPORA STRATEGY ═══════════════════ -->
+<div class="section vision-section" id="v-diaspora">
+  <div class="section-eyebrow" data-en="Bringing Talent Home" data-es="Trayendo el Talento a Casa">Bringing Talent Home</div>
+  <div class="section-title" data-en="The Diaspora Strategy" data-es="La Estrategia de la Diáspora">The Diaspora Strategy</div>
+
+  <div class="message-box">
+    <h3 data-en="Venezuela's Greatest Asset" data-es="El Mayor Activo de Venezuela">Venezuela's Greatest Asset</h3>
+    <blockquote data-en="&quot;Our greatest asset is 8 million Venezuelans abroad ready to return, invest and rebuild.&quot;" data-es="&quot;Nuestro mayor activo son 8 millones de venezolanos en el exterior listos para regresar, invertir y reconstruir.&quot;">"Our greatest asset is 8 million Venezuelans abroad ready to return, invest and rebuild."</blockquote>
+    <p style="text-align:right; font-style:italic; color:var(--gold-light);" data-en="— María Corina Machado" data-es="— María Corina Machado">— María Corina Machado</p>
+  </div>
+
+  <p class="section-intro" data-en="8 million Venezuelans fled the country under Chávez and Maduro. They are doctors in Spain and Chile. Engineers at Google, Meta, and Tesla. Professors at Harvard, Stanford, and Oxford. Entrepreneurs in Miami, New York, and Mexico City. Skilled tradespeople in Colombia, Peru, and Brazil. This is the most educated, ambitious, globally connected diaspora in Latin American history." data-es="8 millones de venezolanos huyeron del país bajo Chávez y Maduro. Son médicos en España y Chile. Ingenieros en Google, Meta y Tesla. Profesores en Harvard, Stanford y Oxford. Empresarios en Miami, Nueva York y Ciudad de México. Trabajadores calificados en Colombia, Perú y Brasil. Esta es la diáspora más educada, ambiciosa y conectada globalmente en la historia latinoamericana.">8 million Venezuelans fled the country under Chávez and Maduro. They are doctors in Spain and Chile. Engineers at Google, Meta, and Tesla. Professors at Harvard, Stanford, and Oxford. Entrepreneurs in Miami, New York, and Mexico City. Skilled tradespeople in Colombia, Peru, and Brazil. This is the most educated, ambitious, globally connected diaspora in Latin American history.</p>
+
+  <div class="message-box" style="background:linear-gradient(160deg, rgba(201,168,76,0.1), rgba(201,168,76,0.02)); border-left-color:var(--gold);">
+    <h3 data-en="The Vision: 5 Million Venezuelans Home by 2037" data-es="La Visión: 5 Millones de Venezolanos en Casa para 2037">The Vision: 5 Million Venezuelans Home by 2037</h3>
+    <p data-en="Not as refugees returning. As builders returning." data-es="No como refugiados que regresan. Como constructores que regresan.">Not as refugees returning. As builders returning.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Year 1 — Immediate Actions" data-es="Año 1 — Acciones Inmediatas">Year 1 — Immediate Actions</div>
+      <div class="tl-title" data-en="Remove Barriers, Create Incentives" data-es="Eliminar Barreras, Crear Incentivos">Remove Barriers, Create Incentives</div>
+      <ul class="tl-actions">
+        <li data-en="Diaspora Visa Program: Automatic residency and citizenship restoration for all Venezuelans abroad" data-es="Programa de Visa para Diáspora: Restauración automática de residencia y ciudadanía para todos los venezolanos en el exterior">Diaspora Visa Program: Automatic residency and citizenship restoration for all Venezuelans abroad</li>
+        <li data-en="Tax-free repatriation of foreign earnings for first 3 years" data-es="Repatriación libre de impuestos de ganancias extranjeras durante los primeros 3 años">Tax-free repatriation of foreign earnings for first 3 years</li>
+        <li data-en="One-time $10,000 'return grant' for families who move back and start businesses" data-es="Bono de retorno único de $10,000 para familias que regresan e inician negocios">One-time $10,000 "return grant" for families who move back and start businesses</li>
+        <li data-en="Housing assistance: subsidized mortgages, rent support for first year" data-es="Asistencia de vivienda: hipotecas subsidiadas, apoyo de alquiler durante el primer año">Housing assistance: subsidized mortgages, rent support for first year</li>
+        <li data-en="Skills matching platform: Government-run portal connecting returning Venezuelans to jobs" data-es="Plataforma de emparejamiento de habilidades: Portal gubernamental conectando venezolanos que regresan con empleos">Skills matching platform: Government-run portal connecting returning Venezuelans to jobs</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Years 2–5 — Medium-Term" data-es="Años 2–5 — Mediano Plazo">Years 2–5 — Medium-Term</div>
+      <div class="tl-title" data-en="Active Recruitment" data-es="Reclutamiento Activo">Active Recruitment</div>
+      <ul class="tl-actions">
+        <li data-en="Reverse brain drain recruitment: Send delegations to Miami, Madrid, Santiago, Bogotá" data-es="Reclutamiento de reversión de fuga de cerebros: Enviar delegaciones a Miami, Madrid, Santiago, Bogotá">Reverse brain drain recruitment: Send delegations to Miami, Madrid, Santiago, Bogotá</li>
+        <li data-en="Dual-career support: Help spouses of returning Venezuelans find jobs" data-es="Apoyo de carrera dual: Ayudar a cónyuges de venezolanos que regresan a encontrar empleos">Dual-career support: Help spouses of returning Venezuelans find jobs</li>
+        <li data-en="Returnee entrepreneurship program: Fast-track business registration, microloans, mentorship" data-es="Programa de emprendimiento para retornados: Registro de negocios acelerado, microcréditos, mentoría">Returnee entrepreneurship program: Fast-track business registration, microloans, mentorship</li>
+        <li data-en="Target: 2 million return by 2030" data-es="Objetivo: 2 millones de retornados para 2030">Target: 2 million return by 2030</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-week" data-en="Years 6–12 — Long-Term" data-es="Años 6–12 — Largo Plazo">Years 6–12 — Long-Term</div>
+      <div class="tl-title" data-en="Global Venezuelan Network" data-es="Red Global Venezolana">Global Venezuelan Network</div>
+      <ul class="tl-actions">
+        <li data-en="Maintain ties with diaspora who choose to stay abroad — they become Venezuela's ambassadors, investors, and trade partners" data-es="Mantener vínculos con diáspora que elige quedarse en el exterior — se convierten en embajadores, inversionistas y socios comerciales de Venezuela">Maintain ties with diaspora who choose to stay abroad — they become Venezuela's ambassadors, investors, and trade partners</li>
+        <li data-en="Circular migration: Enable Venezuelans to live and work between Venezuela and other countries" data-es="Migración circular: Permitir que venezolanos vivan y trabajen entre Venezuela y otros países">Circular migration: Enable Venezuelans to live and work between Venezuela and other countries</li>
+        <li data-en="Leverage global connections while maintaining Venezuelan base" data-es="Aprovechar conexiones globales manteniendo base venezolana">Leverage global connections while maintaining Venezuelan base</li>
+        <li data-en="Target: 5 million return by 2037" data-es="Objetivo: 5 millones de retornados para 2037">Target: 5 million return by 2037</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="message-box secondary" style="margin-top:40px;">
+    <h3 data-en="Why They Will Return" data-es="Por Qué Regresarán">Why They Will Return</h3>
+    <p data-en="Venezuelans did not leave because they wanted to. They left because they had to. As María Corina has said: 'I want you to know that I am absolutely convinced that we're moving into a transition that is going to be orderly. Venezuela is a cohesive society, we have no tensions, racial, religious, social, political, and 90% of our country wants the same, to live with dignity, with justice, certainly with freedom, and we want to bring our kids back home.' The moment Venezuela is safe, prosperous, and governed by the rule of law, millions will return. Not as charity cases — as builders of a new nation." data-es="Los venezolanos no se fueron porque quisieron. Se fueron porque tuvieron que hacerlo. Como dijo María Corina: 'Quiero que sepan que estoy absolutamente convencida de que nos estamos moviendo hacia una transición que va a ser ordenada. Venezuela es una sociedad cohesionada, no tenemos tensiones raciales, religiosas, sociales, políticas, y el 90% de nuestro país quiere lo mismo, vivir con dignidad, con justicia, ciertamente con libertad, y queremos traer a nuestros hijos de regreso a casa.' En el momento en que Venezuela sea segura, próspera y gobernada por el estado de derecho, millones regresarán. No como casos de caridad — como constructores de una nueva nación.">Venezuelans did not leave because they wanted to. They left because they had to. As María Corina has said: "I want you to know that I am absolutely convinced that we're moving into a transition that is going to be orderly. Venezuela is a cohesive society, we have no tensions, racial, religious, social, political, and 90% of our country wants the same, to live with dignity, with justice, certainly with freedom, and we want to bring our kids back home." The moment Venezuela is safe, prosperous, and governed by the rule of law, millions will return. Not as charity cases — as builders of a new nation.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ EXECUTION & KPIs ═══════════════════ -->
+<div class="section vision-section" id="v-execution">
+  <div class="section-eyebrow" data-en="Implementation" data-es="Implementación">Implementation</div>
+  <div class="section-title" data-en="Governance, Execution & KPIs" data-es="Gobernanza, Ejecución e Indicadores">Governance, Execution & KPIs</div>
+  <p class="section-intro" data-en="How do we ensure Vision 2037 is executed — not just published?" data-es="¿Cómo aseguramos que Visión 2037 se ejecute — no solo se publique?">How do we ensure Vision 2037 is executed — not just published?</p>
+
+  <div class="message-box">
+    <h3 data-en="Vision 2037 Delivery Office" data-es="Oficina de Entrega de Visión 2037">Vision 2037 Delivery Office</h3>
+    <ul style="list-style:none; padding:0;">
+      <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" data-en="✦ Independent agency reporting directly to the President" data-es="✦ Agencia independiente reportando directamente al Presidente">✦ Independent agency reporting directly to the President</li>
+      <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" data-en="✦ CEO-level leadership: Recruit a world-class COO/delivery expert (private sector background preferred)" data-es="✦ Liderazgo de nivel CEO: Reclutar experto en entrega/COO de clase mundial (preferiblemente con experiencia del sector privado)">✦ CEO-level leadership: Recruit a world-class COO/delivery expert (private sector background preferred)</li>
+      <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" data-en="✦ Quarterly public scorecards: Publish progress on all KPIs every 90 days" data-es="✦ Informes públicos trimestrales: Publicar progreso de todos los KPIs cada 90 días">✦ Quarterly public scorecards: Publish progress on all KPIs every 90 days</li>
+      <li style="padding:8px 0;" data-en="✦ Accountability: Ministers and agency heads evaluated on Vision 2037 KPIs; failure to deliver = replacement" data-es="✦ Rendición de cuentas: Ministros y jefes de agencias evaluados en KPIs de Visión 2037; falta de entrega = reemplazo">✦ Accountability: Ministers and agency heads evaluated on Vision 2037 KPIs; failure to deliver = replacement</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Key Performance Indicators (Published Quarterly)" data-es="Indicadores Clave de Desempeño (Publicados Trimestralmente)">Key Performance Indicators (Published Quarterly)</div>
+
+  <div class="situation-grid">
+    <div class="sit-card">
+      <h3 data-en="Economic KPIs" data-es="KPIs Económicos">Economic KPIs</h3>
+      <ul>
+        <li data-en="GDP growth rate (target: 8–12% annually through 2032)" data-es="Tasa de crecimiento del PIB (objetivo: 8–12% anual hasta 2032)">GDP growth rate (target: 8–12% annually through 2032)</li>
+        <li data-en="FDI inflows (target: $100B+ annually by 2030)" data-es="Flujos de IED (objetivo: $100B+ anualmente para 2030)">FDI inflows (target: $100B+ annually by 2030)</li>
+        <li data-en="Unemployment rate (target: <5% by 2030)" data-es="Tasa de desempleo (objetivo: <5% para 2030)">Unemployment rate (target: <5% by 2030)</li>
+        <li data-en="Oil production (barrels per day)" data-es="Producción de petróleo (barriles por día)">Oil production (barrels per day)</li>
+        <li data-en="Number of privatizations completed" data-es="Número de privatizaciones completadas">Number of privatizations completed</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Social KPIs" data-es="KPIs Sociales">Social KPIs</h3>
+      <ul>
+        <li data-en="Venezuelans returned from diaspora" data-es="Venezolanos retornados de la diáspora">Venezuelans returned from diaspora</li>
+        <li data-en="Rule of law ranking (World Justice Project)" data-es="Ranking de estado de derecho (Proyecto de Justicia Mundial)">Rule of law ranking (World Justice Project)</li>
+        <li data-en="Corruption Perceptions Index (Transparency International)" data-es="Índice de Percepción de Corrupción (Transparencia Internacional)">Corruption Perceptions Index (Transparency International)</li>
+        <li data-en="Electricity access (% of population)" data-es="Acceso a electricidad (% de población)">Electricity access (% of population)</li>
+        <li data-en="Healthcare access metrics" data-es="Métricas de acceso a atención médica">Healthcare access metrics</li>
+      </ul>
+    </div>
+    <div class="sit-card">
+      <h3 data-en="Technology KPIs" data-es="KPIs Tecnológicos">Technology KPIs</h3>
+      <ul>
+        <li data-en="Datacenters operational" data-es="Centros de datos operativos">Datacenters operational</li>
+        <li data-en="Tech sector jobs created" data-es="Empleos del sector tecnológico creados">Tech sector jobs created</li>
+        <li data-en="Startups funded" data-es="Startups financiadas">Startups funded</li>
+        <li data-en="Internet penetration & speed" data-es="Penetración de internet y velocidad">Internet penetration & speed</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-title" data-en="Financing the Vision" data-es="Financiando la Visión">Financing the Vision</div>
+
+  <div class="message-box">
+    <h3 data-en="How Do We Pay For This?" data-es="¿Cómo Pagamos Por Esto?">How Do We Pay For This?</h3>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3 data-en="Oil Revenues" data-es="Ingresos Petroleros">Oil Revenues</h3>
+        <p data-en="Immediate production increases generate billions in new government revenue" data-es="Aumentos inmediatos de producción generan miles de millones en nuevos ingresos gubernamentales">Immediate production increases generate billions in new government revenue</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3 data-en="Privatization Proceeds" data-es="Ingresos de Privatización">Privatization Proceeds</h3>
+        <p data-en="$1.7T in asset sales over 15 years funds infrastructure and social programs" data-es="$1.7T en ventas de activos durante 15 años financia infraestructura y programas sociales">$1.7T in asset sales over 15 years funds infrastructure and social programs</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3 data-en="Foreign Direct Investment" data-es="Inversión Extranjera Directa">Foreign Direct Investment</h3>
+        <p data-en="Private capital finances energy, tech, infrastructure buildout" data-es="Capital privado financia construcción de energía, tecnología, infraestructura">Private capital finances energy, tech, infrastructure buildout</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <h3 data-en="Sovereign Wealth Fund" data-es="Fondo Soberano de Riqueza">Sovereign Wealth Fund</h3>
+        <p data-en="Norwegian model — invest oil windfall for long-term fiscal sustainability" data-es="Modelo noruego — invertir excedente petrolero para sostenibilidad fiscal a largo plazo">Norwegian model — invest oil windfall for long-term fiscal sustainability</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="message-box secondary" style="margin-top:40px;">
+    <h3 data-en="Venezuela Does Not Need Charity" data-es="Venezuela No Necesita Caridad">Venezuela Does Not Need Charity</h3>
+    <p data-en="Venezuela needs rule of law, open markets, and a government that serves its people. As María Corina has said: 'We can finance and take on the costs involved in a reconstruction.' The resources exist. The capital is waiting. What has been missing is a government worthy of trust." data-es="Venezuela necesita estado de derecho, mercados abiertos y un gobierno que sirva a su pueblo. Como dijo María Corina: 'Podemos financiar y asumir los costos involucrados en una reconstrucción'. Los recursos existen. El capital está esperando. Lo que ha faltado es un gobierno digno de confianza.">Venezuela needs rule of law, open markets, and a government that serves its people. As María Corina has said: "We can finance and take on the costs involved in a reconstruction." The resources exist. The capital is waiting. What has been missing is a government worthy of trust.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="message-box" style="background:linear-gradient(160deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05)); border-left-color:var(--gold);">
+    <h3 data-en="Conclusion: From Collapse to Boom" data-es="Conclusión: Del Colapso al Auge">Conclusion: From Collapse to Boom</h3>
+    <p data-en="For 27 years, Venezuela has been a case study in how socialism destroys prosperity. Vision 2037 will make Venezuela a case study in how democracy and free markets create it." data-es="Durante 27 años, Venezuela ha sido un caso de estudio sobre cómo el socialismo destruye la prosperidad. Visión 2037 hará de Venezuela un caso de estudio sobre cómo la democracia y los mercados libres la crean.">For 27 years, Venezuela has been a case study in how socialism destroys prosperity. Vision 2037 will make Venezuela a case study in how democracy and free markets create it.</p>
+    <p data-en="This is not a political document. This is a promise to the Venezuelan people — and to the world." data-es="Este no es un documento político. Esta es una promesa al pueblo venezolano — y al mundo.">This is not a political document. This is a promise to the Venezuelan people — and to the world.</p>
+    <blockquote style="margin-top:20px;" data-en="&quot;We will transform Venezuela from the criminal hub of the Americas to the energy and technology hub of the Americas. We will bring our children home. We will restore our democracy, reclaim our prosperity, and prove that freedom works.&quot;" data-es="&quot;Transformaremos a Venezuela del centro criminal de las Américas al centro de energía y tecnología de las Américas. Traeremos a nuestros hijos a casa. Restauraremos nuestra democracia, reclamaremos nuestra prosperidad y demostraremos que la libertad funciona.&quot;">"We will transform Venezuela from the criminal hub of the Americas to the energy and technology hub of the Americas. We will bring our children home. We will restore our democracy, reclaim our prosperity, and prove that freedom works."</blockquote>
+    <p style="text-align:center; margin-top:20px; font-size:14px; color:var(--gold-light);" data-en="The infrastructure is still there. The talent is ready to return.<br>The capital is waiting to invest. The Venezuelan people have chosen this path.<br><strong>Now we build.</strong>" data-es="La infraestructura aún está allí. El talento está listo para regresar.<br>El capital está esperando para invertir. El pueblo venezolano ha elegido este camino.<br><strong>Ahora construimos.</strong>">The infrastructure is still there. The talent is ready to return.<br>The capital is waiting to invest. The Venezuelan people have chosen this path.<br><strong>Now we build.</strong></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="footer-brand" data-en="<strong>Venezuela Vision 2037</strong> · Energy and Technology Hub of the Americas" data-es="<strong>Venezuela Visión 2037</strong> · Hub de Energía y Tecnología de las Américas"><strong>Venezuela Vision 2037</strong> · Energy and Technology Hub of the Americas</div>
+  <p data-en="Prepared by Dennis Paul for the Office of María Corina Machado · February 2026 · Confidential" data-es="Preparado por Dennis Paul para la Oficina de María Corina Machado · Febrero 2026 · Confidencial">Prepared by Dennis Paul for the Office of María Corina Machado · February 2026 · Confidential</p>
+</div>
+
+</div><!-- end #vision-section -->
+
 </div><!-- end #app-content -->
 
 <script>
@@ -3612,6 +4428,46 @@
   function setLang(lang) { applyLang(lang); }
   function toggleLang(chk) { applyLang(chk.checked ? 'es' : 'en'); }
 
+  // ── LANDING PAGE NAVIGATION ──
+  function showPlan(plan) {
+    document.getElementById('landing-page').classList.remove('active');
+    if (plan === 'media') {
+      document.getElementById('media-plan-section').style.display = 'block';
+      document.getElementById('vision-section').style.display = 'none';
+      // Activate first media tab
+      showSection('situation');
+      document.querySelector('.nav-tab').classList.add('active');
+    } else if (plan === 'vision') {
+      document.getElementById('media-plan-section').style.display = 'none';
+      document.getElementById('vision-section').style.display = 'block';
+      // Activate first vision tab
+      document.getElementById('v-overview').classList.add('active');
+      document.querySelectorAll('.vision-tab')[0].classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToLanding() {
+    document.getElementById('landing-page').classList.add('active');
+    document.getElementById('media-plan-section').style.display = 'none';
+    document.getElementById('vision-section').style.display = 'none';
+    // Deactivate all tabs
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.internal-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.vision-section').forEach(s => s.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── VISION SECTION NAVIGATION ──
+  function showVisionSection(id) {
+    document.querySelectorAll('.vision-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.vision-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   // ── PASSWORD 1: MEDIA PLAN ──
   function checkPW() {
     const input = document.getElementById('pw-input');
@@ -3646,64 +4502,6 @@
   // Apply saved language on load (works on gate screen too)
   applyLang(currentLang);
 
-  // ── PASSWORD 2: INTERNAL SECTIONS ──
-  let pendingInternalSection = null;
-
-  function requestInternal(sectionId) {
-    if (sessionStorage.getItem('mcm_int_auth') === '1') {
-      showInternalSection(sectionId);
-    } else {
-      pendingInternalSection = sectionId;
-      document.getElementById('internal-gate').classList.add('active');
-      setTimeout(() => document.getElementById('int-input').focus(), 100);
-    }
-  }
-
-  function checkIntPW() {
-    const input = document.getElementById('int-input');
-    const err = document.getElementById('int-error');
-    const val = input.value.trim();
-    if (!val) return;
-    if (val === 'GloriaAlBravoPueblo2026') {
-      document.getElementById('internal-gate').classList.remove('active');
-      sessionStorage.setItem('mcm_int_auth', '1');
-      input.value = '';
-      if (pendingInternalSection) {
-        showInternalSection(pendingInternalSection);
-        pendingInternalSection = null;
-      }
-    } else {
-      input.classList.remove('shake');
-      void input.offsetWidth;
-      input.classList.add('shake');
-      err.classList.add('visible');
-      input.value = '';
-      setTimeout(() => { input.classList.remove('shake'); err.classList.remove('visible'); }, 3000);
-    }
-  }
-
-  function cancelIntGate() {
-    document.getElementById('internal-gate').classList.remove('active');
-    document.getElementById('int-input').value = '';
-    pendingInternalSection = null;
-  }
-
-  function showInternalSection(id) {
-    // Hide all public sections and internal sections
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.internal-section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    const target = document.getElementById(id);
-    if (target) target.classList.add('active');
-    // Highlight the correct nav tab
-    document.querySelectorAll('.nav-tab').forEach(t => {
-      if (t.getAttribute('onclick') && t.getAttribute('onclick').includes(id)) {
-        t.classList.add('active');
-      }
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   // ── PUBLIC NAVIGATION ──
   function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -3711,6 +4509,20 @@
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showInternalSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.internal-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(t => {
+      if (t.getAttribute('onclick') && t.getAttribute('onclick').includes(id)) {
+        t.classList.add('active');
+      }
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
